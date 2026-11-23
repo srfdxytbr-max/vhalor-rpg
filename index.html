@@ -73,7 +73,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
  const canvas=document.getElementById('world3d');if(!canvas)return;
  const scene=new THREE.Scene();
  const camera=new THREE.PerspectiveCamera(36,innerWidth/innerHeight,.1,100);
- camera.position.set(0,0,8.7);
+ camera.position.set(0,0,12.6);
  const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
  renderer.setPixelRatio(Math.min(devicePixelRatio,1.8));renderer.setSize(innerWidth,innerHeight);
  renderer.outputColorSpace=THREE.SRGBColorSpace;
@@ -84,11 +84,11 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
   const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
   const g=x.createLinearGradient(0,0,0,1024);g.addColorStop(0,'#c8e5df');g.addColorStop(.12,'#245a70');g.addColorStop(.5,'#17617a');g.addColorStop(.88,'#245a70');g.addColorStop(1,'#d9eee9');x.fillStyle=g;x.fillRect(0,0,2048,1024);
   let seed=2013;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
-  const continents=[{cx:380,cy:360,rx:220,ry:160},{cx:750,cy:610,rx:190,ry:130},{cx:1100,cy:330,rx:260,ry:170},{cx:1480,cy:600,rx:210,ry:145},{cx:1830,cy:330,rx:180,ry:135},{cx:90,cy:760,rx:100,ry:70}];
+  const continents=[{cx:690,cy:405,rx:205,ry:170},{cx:890,cy:555,rx:175,ry:125},{cx:1080,cy:370,rx:230,ry:155},{cx:1300,cy:555,rx:190,ry:135},{cx:1460,cy:345,rx:150,ry:115},{cx:1010,cy:720,rx:95,ry:65}];
   for(const a of continents){
    x.save();x.translate(a.cx,a.cy);x.rotate((rand()-.5)*.5);x.beginPath();
    for(let i=0;i<=180;i++){const t=i/180*Math.PI*2,noise=.78+rand()*.35,px=Math.cos(t)*a.rx*noise,py=Math.sin(t)*a.ry*noise;i?x.lineTo(px,py):x.moveTo(px,py)}
-   x.closePath();const land=x.createLinearGradient(-a.rx,-a.ry,a.rx,a.ry);land.addColorStop(0,'#b0b28a');land.addColorStop(.3,'#617d5b');land.addColorStop(.65,'#315f4e');land.addColorStop(1,'#8b9470');x.fillStyle=land;x.fill();
+   x.closePath();const land=x.createLinearGradient(-a.rx,-a.ry,a.rx,a.ry);land.addColorStop(0,'#c2bd8b');land.addColorStop(.3,'#78965a');land.addColorStop(.65,'#356c4d');land.addColorStop(1,'#a0a477');x.fillStyle=land;x.fill();
    // Mountain chains and forest texture flecks.
    for(let j=0;j<260;j++){const px=(rand()*2-1)*a.rx*.85,py=(rand()*2-1)*a.ry*.8;if((px/a.rx)**2+(py/a.ry)**2<.72){x.fillStyle=rand()>.5?'#d0c49b55':'#173e3555';x.beginPath();x.ellipse(px,py,2+rand()*8,1+rand()*4,rand()*3,0,Math.PI*2);x.fill()}}
    x.restore();
@@ -104,18 +104,18 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
   const t=new THREE.CanvasTexture(c);return t;
  }
  let seed2=42;function rand2(){seed2=(seed2*1664525+1013904223)>>>0;return seed2/4294967296}
- const globe=new THREE.Mesh(new THREE.SphereGeometry(2,96,64),new THREE.MeshStandardMaterial({map:makeMap(),roughness:.92,metalness:0}));world.add(globe);
- const clouds=new THREE.Mesh(new THREE.SphereGeometry(2.025,96,64),new THREE.MeshStandardMaterial({map:makeClouds(),transparent:true,opacity:.42,depthWrite:false}));world.add(clouds);
- const atmo=new THREE.Mesh(new THREE.SphereGeometry(2.08,96,64),new THREE.MeshBasicMaterial({color:0x6dcfff,transparent:true,opacity:.105,side:THREE.BackSide,blending:THREE.AdditiveBlending}));world.add(atmo);
+ const globe=new THREE.Mesh(new THREE.SphereGeometry(2,96,64),new THREE.MeshStandardMaterial({map:makeMap(),roughness:.78,metalness:0}));world.add(globe);
+ const clouds=new THREE.Mesh(new THREE.SphereGeometry(2.025,96,64),new THREE.MeshStandardMaterial({map:makeClouds(),transparent:true,opacity:.68,depthWrite:false}));world.add(clouds);
+ const atmo=new THREE.Mesh(new THREE.SphereGeometry(2.12,96,64),new THREE.MeshBasicMaterial({color:0x52caff,transparent:true,opacity:.19,side:THREE.BackSide,blending:THREE.AdditiveBlending}));world.add(atmo);
  // The sun is FIXED in space. Only Vhalor rotates on its axis, creating the day/night cycle.
  const sunLight=new THREE.DirectionalLight(0xffe2b3,3.1);sunLight.position.set(-8,3,5);scene.add(sunLight);
- scene.add(new THREE.AmbientLight(0x8299b6,.38));
+ scene.add(new THREE.AmbientLight(0xa9c8e8,.72));
  const sun=new THREE.Mesh(new THREE.SphereGeometry(.48,48,32),new THREE.MeshBasicMaterial({color:0xffc477}));
- sun.position.set(-8,3,5);scene.add(sun);
- const sunGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:(()=>{const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),g=x.createRadialGradient(64,64,2,64,64,64);g.addColorStop(0,'rgba(255,224,160,.9)');g.addColorStop(.22,'rgba(255,167,91,.35)');g.addColorStop(1,'rgba(255,130,70,0)');x.fillStyle=g;x.fillRect(0,0,128,128);return new THREE.CanvasTexture(c)})(),transparent:true,depthWrite:false}));sunGlow.scale.set(3.6,3.6,1);sunGlow.position.copy(sun.position);scene.add(sunGlow);
+ sun.position.set(-8,3,-13);scene.add(sun);
+ const sunGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:(()=>{const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),g=x.createRadialGradient(64,64,2,64,64,64);g.addColorStop(0,'rgba(255,224,160,.9)');g.addColorStop(.22,'rgba(255,167,91,.35)');g.addColorStop(1,'rgba(255,130,70,0)');x.fillStyle=g;x.fillRect(0,0,128,128);return new THREE.CanvasTexture(c)})(),transparent:true,depthWrite:false}));sunGlow.scale.set(5.2,5.2,1);sunGlow.position.copy(sun.position);scene.add(sunGlow);
  // Two moons orbit on separate inclined planes, at different speeds.
  function moon(radius,color,distance,speed,inclination,size){const pivot=new THREE.Group();pivot.rotation.x=inclination;pivot.rotation.z=inclination*.55;world.add(pivot);const m=new THREE.Mesh(new THREE.SphereGeometry(size,40,28),new THREE.MeshStandardMaterial({color,roughness:1}));m.position.set(distance,0,0);pivot.add(m);return pivot}
- const moonA=moon(1,0xdfe8ef,3.05,.12,.16,.22),moonB=moon(1,0x72a9d4,3.65,.085,-.28,.12);
+ const moonA=moon(1,0xdfe8ef,3.05,.12,.16,.29),moonB=moon(1,0x72a9d4,3.65,.085,-.28,.18);
  let last=0;
  function resize(){const w=innerWidth,h=innerHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);renderer.setPixelRatio(Math.min(devicePixelRatio,1.8))}
  addEventListener('resize',resize);
@@ -123,7 +123,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
   globe.rotation.y+=dt*.025;clouds.rotation.y+=dt*.031;world.rotation.z=Math.sin(t*.00008)*.035;
   moonA.rotation.y+=dt*.12;moonB.rotation.y+=dt*.085;
   // Slow camera breathing, while the star remains fixed and never circles the planet.
-  camera.position.x=Math.sin(t*.00008)*.10;camera.position.y=Math.cos(t*.00011)*.045;camera.lookAt(0,0,0);
+  camera.position.x=Math.sin(t*.00008)*.12;camera.position.y=Math.cos(t*.00011)*.06;camera.lookAt(0,0,0);
   renderer.render(scene,camera);
  }
  requestAnimationFrame(animate);
