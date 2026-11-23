@@ -111,36 +111,22 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
  }
  let seed2=42;function rand2(){seed2=(seed2*1664525+1013904223)>>>0;return seed2/4294967296}
  const globe=new THREE.Mesh(new THREE.SphereGeometry(2,96,64),new THREE.MeshStandardMaterial({map:makeMap(),roughness:.78,metalness:0}));world.add(globe);
- // Several DISTINCT transparent cloud PNGs, not copies of a single image.
- // Each texture is loaded separately and distributed in 3D patches over the globe.
- const cloudGroup=new THREE.Group();world.add(cloudGroup);
- const cloudSources=[
-  'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA3L2FyLXNldC0xMDA3MjQtaGktMDItMDAyLTEucG5n.png',
-  'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA3L2FyLXNldC0yNzA3MjQtZXgtMDEtMDAyLTEucG5n.png',
-  'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA2L3Jhd3BpeGVsX29mZmljZV8zNF9waG90b19vZl9hX3JlYWxfZ3JheV9zdHJhdG9jdW11bHVzX2Nsb3VkX3BuZ19jYTNiYTdmZi1hZWYxLTQzMzEtOTliOC03N2U0Y2Y0NzA3YTQucG5n.png',
-  'https://images.rawpixel.com/image_png_social_landscape/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA2L3Jhd3BpeGVsX29mZmljZV8zMl9waG90b19vZl9hX2dyZXlfY2xvdWRfaXNvbGF0ZWRfb25fd2hpdGVfYmFja182NDY5NTU1Ny1iMTM5LTQ4YzItYWY1ZC1jMTcwNDEzZTZkN2QucG5n.png'
- ];
- const cloudLoader=new THREE.TextureLoader();cloudLoader.setCrossOrigin('anonymous');
- let cloudSeed=818;const cloudRand=()=>{cloudSeed=(cloudSeed*1664525+1013904223)>>>0;return cloudSeed/4294967296};
- const cloudMaterials=[];
- cloudSources.forEach((url,index)=>cloudLoader.load(url,(tex)=>{
-  tex.colorSpace=THREE.SRGBColorSpace;
-  const mat=new THREE.MeshBasicMaterial({map:tex,transparent:true,opacity:.9,depthWrite:false,side:THREE.DoubleSide});
-  cloudMaterials[index]=mat;
-  // A different cloud PNG variant gets its own set of placements and sizes.
-  const count=index===0?10:11;
-  for(let i=0;i<count;i++){
-   const lat=(cloudRand()-.5)*Math.PI*.82,lon=cloudRand()*Math.PI*2;
-   const normal=new THREE.Vector3(Math.cos(lat)*Math.cos(lon),Math.sin(lat),Math.cos(lat)*Math.sin(lon)).normalize();
-   const patch=new THREE.Mesh(new THREE.PlaneGeometry(1,1),mat);
-   patch.position.copy(normal).multiplyScalar(2.047+index*.002);
-   patch.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),normal);
-   const scale=.24+cloudRand()*.34;
-   patch.scale.set(scale*(1.15+cloudRand()*.9),scale*(.55+cloudRand()*.65),1);
-   patch.rotation.z=cloudRand()*Math.PI*2;patch.renderOrder=4+index;cloudGroup.add(patch);
+ // Simple procedural cloud layer restored: soft translucent cloud formations.
+ function makeClouds(){
+  const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
+  let seed=42;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
+  for(let i=0;i<1000;i++){
+   const px=rand()*2048,py=rand()*1024,rx=15+rand()*85,ry=4+rand()*20,alpha=.025+rand()*.08;
+   const g=x.createRadialGradient(px,py,1,px,py,rx);
+   g.addColorStop(0,'rgba(245,250,255,'+alpha+')');g.addColorStop(.65,'rgba(235,246,250,'+(alpha*.65)+')');g.addColorStop(1,'rgba(235,246,250,0)');
+   x.fillStyle=g;x.beginPath();x.ellipse(px,py,rx,ry,rand()*3,0,Math.PI*2);x.fill();
   }
- },undefined,(err)=>console.warn('Could not load cloud PNG variant '+index,err)));
- // Warm city lights on the principal continent, visible only on the night side.
+  const tex=new THREE.CanvasTexture(c);tex.wrapS=THREE.RepeatWrapping;tex.colorSpace=THREE.SRGBColorSpace;return tex;
+ }
+ const cloudGroup=new THREE.Group();world.add(cloudGroup);
+ const clouds=new THREE.Mesh(new THREE.SphereGeometry(2.025,96,64),new THREE.MeshBasicMaterial({map:makeClouds(),transparent:true,opacity:.78,depthWrite:false,side:THREE.FrontSide}));
+ cloudGroup.add(clouds);
+  // Warm city lights on the principal continent, visible only on the night side.
  function makeCityLights(){
   const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
   let sd=733;const rr=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296};
