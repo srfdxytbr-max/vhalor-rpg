@@ -109,28 +109,25 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
   const ice2=x.createLinearGradient(0,870,0,1024);ice2.addColorStop(0,'#f4fbff00');ice2.addColorStop(1,'#f4fbff');x.fillStyle=ice2;x.fillRect(0,870,2048,154);
   const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;return tex;
  }
- function makeClouds(){
-  /* High-resolution transparent cloud atlas: broad realistic cloud banks plus fine wisps. */
-  const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
-  let sd=91;const rr=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296};
-  for(let band=0;band<5;band++){
-   const n=170-band*18;
-   for(let i=0;i<n;i++){
-    const px=rr()*2048,py=rr()*1024,rx=35+rr()*115,ry=10+rr()*34,alpha=.12+rr()*.18;
-    x.save();x.translate(px,py);x.rotate((rr()-.5)*.55);
-    const g=x.createRadialGradient(0,0,rx*.05,0,0,rx);
-    g.addColorStop(0,'rgba(255,255,255,'+(alpha*1.5)+')');g.addColorStop(.38,'rgba(247,252,255,'+alpha+')');g.addColorStop(1,'rgba(235,246,255,0)');
-    x.fillStyle=g;x.beginPath();x.ellipse(0,0,rx,ry,0,0,Math.PI*2);x.fill();
-    /* Small cumulus lobes create a natural broken silhouette. */
-    for(let k=0;k<4;k++){const ox=(rr()-.5)*rx,oy=(rr()-.5)*ry*.8,rad=ry*(.35+rr()*.7);x.globalAlpha=.55;x.fillStyle='rgba(255,255,255,'+alpha+')';x.beginPath();x.arc(ox,oy,rad,0,Math.PI*2);x.fill()}
-    x.restore();
-   }
-  }
-  const t=new THREE.CanvasTexture(c);t.wrapS=THREE.RepeatWrapping;t.colorSpace=THREE.SRGBColorSpace;return t;
- }
  let seed2=42;function rand2(){seed2=(seed2*1664525+1013904223)>>>0;return seed2/4294967296}
  const globe=new THREE.Mesh(new THREE.SphereGeometry(2,96,64),new THREE.MeshStandardMaterial({map:makeMap(),roughness:.78,metalness:0}));world.add(globe);
- const clouds=new THREE.Mesh(new THREE.SphereGeometry(2.025,96,64),new THREE.MeshBasicMaterial({map:makeClouds(),transparent:true,opacity:.92,depthWrite:false,side:THREE.FrontSide}));world.add(clouds);
+ // Real transparent PNG cloud sprites placed as 3D patches above Novera's surface.
+ const cloudGroup=new THREE.Group();world.add(cloudGroup);
+ const cloudTextureLoader=new THREE.TextureLoader();cloudTextureLoader.setCrossOrigin('anonymous');
+ cloudTextureLoader.load('https://static.vecteezy.com/system/resources/thumbnails/049/572/375/small_2x/white-fluffy-cloud-light-and-delicate-graphic-free-png.png',(cloudTexture)=>{
+  cloudTexture.colorSpace=THREE.SRGBColorSpace;
+  const cloudMaterial=new THREE.MeshBasicMaterial({map:cloudTexture,transparent:true,opacity:.88,depthWrite:false,side:THREE.DoubleSide});
+  let cloudSeed=818;const cloudRand=()=>{cloudSeed=(cloudSeed*1664525+1013904223)>>>0;return cloudSeed/4294967296};
+  for(let i=0;i<46;i++){
+   const lat=(cloudRand()-.5)*Math.PI*.82,lon=cloudRand()*Math.PI*2;
+   const normal=new THREE.Vector3(Math.cos(lat)*Math.cos(lon),Math.sin(lat),Math.cos(lat)*Math.sin(lon)).normalize();
+   const patch=new THREE.Mesh(new THREE.PlaneGeometry(1,1),cloudMaterial);
+   patch.position.copy(normal).multiplyScalar(2.045);
+   patch.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),normal);
+   const scale=.22+cloudRand()*.42;patch.scale.set(scale*(1.15+cloudRand()*.8),scale*(.62+cloudRand()*.4),1);
+   patch.rotation.z=cloudRand()*Math.PI*2;patch.renderOrder=3;cloudGroup.add(patch);
+  }
+ },undefined,(err)=>console.warn('Could not load Novera cloud PNG:',err));
  // Warm city lights on the principal continent, visible only on the night side.
  function makeCityLights(){
   const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
@@ -163,7 +160,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
  function resize(){const w=innerWidth,h=innerHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);renderer.setPixelRatio(Math.min(devicePixelRatio,1.8))}
  addEventListener('resize',resize);
  function animate(t){requestAnimationFrame(animate);const dt=Math.min((t-last)/1000||0,.05);last=t;
-  globe.rotation.y+=dt*.025;clouds.rotation.y+=dt*.033;cityLayer.rotation.y=globe.rotation.y;world.rotation.z=Math.sin(t*.00008)*.035;
+  globe.rotation.y+=dt*.025;cloudGroup.rotation.y+=dt*.033;cityLayer.rotation.y=globe.rotation.y;world.rotation.z=Math.sin(t*.00008)*.035;
   moonA.rotation.y+=dt*.12;moonB.rotation.y+=dt*.085;
   // Slow camera breathing, while the star remains fixed and never circles the planet.
   camera.position.x=Math.sin(t*.00008)*.12;camera.position.y=Math.cos(t*.00011)*.06;camera.lookAt(0,0,0);
