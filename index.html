@@ -111,23 +111,35 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
  }
  let seed2=42;function rand2(){seed2=(seed2*1664525+1013904223)>>>0;return seed2/4294967296}
  const globe=new THREE.Mesh(new THREE.SphereGeometry(2,96,64),new THREE.MeshStandardMaterial({map:makeMap(),roughness:.78,metalness:0}));world.add(globe);
- // Real transparent PNG cloud sprites placed as 3D patches above Novera's surface.
+ // Several DISTINCT transparent cloud PNGs, not copies of a single image.
+ // Each texture is loaded separately and distributed in 3D patches over the globe.
  const cloudGroup=new THREE.Group();world.add(cloudGroup);
- const cloudTextureLoader=new THREE.TextureLoader();cloudTextureLoader.setCrossOrigin('anonymous');
- cloudTextureLoader.load('https://static.vecteezy.com/system/resources/thumbnails/049/572/375/small_2x/white-fluffy-cloud-light-and-delicate-graphic-free-png.png',(cloudTexture)=>{
-  cloudTexture.colorSpace=THREE.SRGBColorSpace;
-  const cloudMaterial=new THREE.MeshBasicMaterial({map:cloudTexture,transparent:true,opacity:.88,depthWrite:false,side:THREE.DoubleSide});
-  let cloudSeed=818;const cloudRand=()=>{cloudSeed=(cloudSeed*1664525+1013904223)>>>0;return cloudSeed/4294967296};
-  for(let i=0;i<46;i++){
+ const cloudSources=[
+  'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA3L2FyLXNldC0xMDA3MjQtaGktMDItMDAyLTEucG5n.png',
+  'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA3L2FyLXNldC0yNzA3MjQtZXgtMDEtMDAyLTEucG5n.png',
+  'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9yYXdw eXhlbF9pbWFnZXMvd2Vic2l0ZV9jb250ZW50L2ZsNDgyNDM1MzI1MDEtaW1hZ2UtY2xvdWRzZXQtam9iNjE1LnBuZw.png',
+  'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA2L3Jhd3BpeGVsX29mZmljZV8zNF9waG90b19vZl9hX3JlYWxfZ3JheV9zdHJhdG9jdW11bHVzX2Nsb3VkX3BuZ19jYTNiYTdmZi1hZWYxLTQzMzEtOTliOC03N2U0Y2Y0NzA3YTQucG5n.png'
+ ];
+ const cloudLoader=new THREE.TextureLoader();cloudLoader.setCrossOrigin('anonymous');
+ let cloudSeed=818;const cloudRand=()=>{cloudSeed=(cloudSeed*1664525+1013904223)>>>0;return cloudSeed/4294967296};
+ const cloudMaterials=[];
+ cloudSources.forEach((url,index)=>cloudLoader.load(url,(tex)=>{
+  tex.colorSpace=THREE.SRGBColorSpace;
+  const mat=new THREE.MeshBasicMaterial({map:tex,transparent:true,opacity:.9,depthWrite:false,side:THREE.DoubleSide});
+  cloudMaterials[index]=mat;
+  // A different cloud PNG variant gets its own set of placements and sizes.
+  const count=index===0?10:11;
+  for(let i=0;i<count;i++){
    const lat=(cloudRand()-.5)*Math.PI*.82,lon=cloudRand()*Math.PI*2;
    const normal=new THREE.Vector3(Math.cos(lat)*Math.cos(lon),Math.sin(lat),Math.cos(lat)*Math.sin(lon)).normalize();
-   const patch=new THREE.Mesh(new THREE.PlaneGeometry(1,1),cloudMaterial);
-   patch.position.copy(normal).multiplyScalar(2.045);
+   const patch=new THREE.Mesh(new THREE.PlaneGeometry(1,1),mat);
+   patch.position.copy(normal).multiplyScalar(2.047+index*.002);
    patch.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),normal);
-   const scale=.22+cloudRand()*.42;patch.scale.set(scale*(1.15+cloudRand()*.8),scale*(.62+cloudRand()*.4),1);
-   patch.rotation.z=cloudRand()*Math.PI*2;patch.renderOrder=3;cloudGroup.add(patch);
+   const scale=.24+cloudRand()*.34;
+   patch.scale.set(scale*(1.15+cloudRand()*.9),scale*(.55+cloudRand()*.65),1);
+   patch.rotation.z=cloudRand()*Math.PI*2;patch.renderOrder=4+index;cloudGroup.add(patch);
   }
- },undefined,(err)=>console.warn('Could not load Novera cloud PNG:',err));
+ },undefined,(err)=>console.warn('Could not load cloud PNG variant '+index,err)));
  // Warm city lights on the principal continent, visible only on the night side.
  function makeCityLights(){
   const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
