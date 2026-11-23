@@ -226,6 +226,39 @@ button.btn:hover,.btn:hover{transform:translateY(-1px);box-shadow:0 5px 18px #00
 #cityArrival .car-three{left:45%;top:0;animation-duration:25s;animation-delay:-15s;transform:scale(.72)}
 @keyframes lorvuRoadDrive{0%{top:0%;transform:translateX(-50%) scale(.62)}50%{top:46%;transform:translateX(-50%) scale(.83)}100%{top:92%;transform:translateX(-50%) scale(1.08)}}
 @media(prefers-reduced-motion:reduce){#cityArrival .lorvu-plane,#cityArrival .lorvu-car{animation-play-state:paused}}
+
+/* Tráfego alinhado exclusivamente à estrada central, sem passar sobre edifícios. */
+#cityArrival .city-road{z-index:7}
+#cityArrival .lorvu-traffic{
+ position:absolute;z-index:8;left:43%;right:auto;bottom:0;width:14%;height:28%;
+ overflow:hidden;pointer-events:none;
+ clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);
+}
+#cityArrival .lorvu-car{
+ position:absolute;left:50%!important;bottom:auto!important;
+ width:clamp(15px,2.2vw,27px);height:clamp(8px,1.2vw,14px);
+ top:-15%;transform:translateX(-50%) scale(.55);
+ animation:lorvuRoadLane 12s linear infinite;
+}
+#cityArrival .lorvu-car:before{top:-35%;height:42%;width:48%;left:26%}
+#cityArrival .car-one{animation-duration:15s;animation-delay:-3s}
+#cityArrival .car-two{animation-duration:18s;animation-delay:-11s}
+#cityArrival .car-three{animation-duration:13s;animation-delay:-7s}
+@keyframes lorvuRoadLane{
+ 0%{top:-15%;transform:translateX(-50%) scale(.48)}
+ 100%{top:108%;transform:translateX(-50%) scale(1.18)}
+}
+/* Janelas acesas de forma quente e visível durante a noite. */
+#cityArrival.night .city-building{filter:brightness(1.08)!important}
+#cityArrival.night .city-building:before{
+ opacity:1!important;
+ background:
+ repeating-linear-gradient(0deg,transparent 0 10px,#ffd98c 11px 15px),
+ repeating-linear-gradient(90deg,transparent 0 9px,#ffe5a7 10px 13px);
+ filter:brightness(1.35);
+ box-shadow:0 0 7px #ffd98c99,0 0 15px #ffcc7044;
+}
+#cityArrival.night .city-building.tower:before{filter:brightness(1.5);box-shadow:0 0 12px #ffe2a1aa}
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
 <button id="musicToggle" type="button" aria-pressed="false" aria-label="Ativar música"><span class="music-icon">♫</span><span id="musicLabel">ATIVAR MÚSICA</span></button>
