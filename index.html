@@ -205,7 +205,9 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
  function resize(){const w=innerWidth,h=innerHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);renderer.setPixelRatio(Math.min(devicePixelRatio,1.8))}
  addEventListener('resize',resize);
  function animate(t){requestAnimationFrame(animate);const dt=Math.min((t-last)/1000||0,.05);last=t;
-  globe.rotation.y+=dt*.025;cloudGroup.rotation.y+=dt*.033;cityLayer.rotation.y=globe.rotation.y;\n  // Lightning pulses briefly and independently over the visible storm cells.\n  const flash=(Math.max(0,Math.sin(t*.0017))**34)*.9+(Math.max(0,Math.sin(t*.00083+2.1))**52)*.7;lightningMat.opacity=flash;stormLayer.material.opacity=.82+flash*.12;world.rotation.z=Math.sin(t*.00008)*.035;
+  globe.rotation.y+=dt*.025;cloudGroup.rotation.y+=dt*.033;cityLayer.rotation.y=globe.rotation.y;
+  // Lightning pulses briefly and independently over the visible storm cells.
+  const flash=(Math.max(0,Math.sin(t*.0017))**34)*.9+(Math.max(0,Math.sin(t*.00083+2.1))**52)*.7;lightningMat.opacity=flash;stormLayer.material.opacity=.82+flash*.12;world.rotation.z=Math.sin(t*.00008)*.035;
   moonA.rotation.y+=dt*.12;moonB.rotation.y+=dt*.085;
   // Slow camera breathing, while the star remains fixed and never circles the planet.
   camera.position.x=Math.sin(t*.00008)*.12;camera.position.y=Math.cos(t*.00011)*.06;camera.lookAt(0,0,0);
