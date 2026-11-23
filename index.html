@@ -195,7 +195,7 @@ new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
  document.getElementById('authForm')?.addEventListener('submit',()=>{if(!active)setPlaying(true)},{once:true});
 })();
 </script>
-<script>(()=>{const c=document.getElementById('cityArrival'),l=document.getElementById('cityWeatherLabel');if(!c)return;const p=['day','sunset','night','dawn'],n=['DIA','PÔR DO SOL','NOITE','AMANHECER'],w=[['','TEMPO LIMPO'],['rain','CHUVA'],['foggy','NEBLINA'],['','TEMPO LIMPO'],['storm','TEMPESTADE'],['snowing','NEVE']];let a=1,b=0,x=performance.now(),y=x;function f(t){if(document.body.classList.contains('arrived')){if(t-x>55000){a=(a+1)%4;x=t;c.classList.remove(...p);c.classList.add(p[a])}if(t-y>26000){b=(b+1)%w.length;y=t;c.classList.remove('rain','storm','foggy','snowing');if(w[b][0])c.classList.add(w[b][0]);l.textContent=n[a]+' · '+w[b][1]}}requestAnimationFrame(f)}c.classList.add('sunset');requestAnimationFrame(f)})();</script><script>
+<script>
 /* Ciclo acelerado de dia/noite e clima variável na capital. */
 (()=>{
  const city=document.getElementById('cityArrival'),label=document.getElementById('cityWeatherLabel'),sun=city?.querySelector('.city-sun');
