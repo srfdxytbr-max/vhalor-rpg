@@ -101,7 +101,7 @@ body.vhalor-city .hero,body.vhalor-city header{opacity:0;pointer-events:none}
 #cityArrival{--sky1:#263b5a;--sky2:#9b9a9c;--sky3:#d29a75;--lights:.3}#cityArrival .city-sky{position:absolute;inset:0;background:linear-gradient(180deg,var(--sky1),var(--sky2) 55%,var(--sky3));transition:background 8s}#cityArrival .city-clouds{position:absolute;inset:7% -25% 35%;z-index:1;opacity:.5;filter:blur(10px);background:radial-gradient(ellipse at 20% 35%,#fff9 0 12%,transparent 30%),radial-gradient(ellipse at 54% 20%,#fff8 0 15%,transparent 32%),radial-gradient(ellipse at 83% 40%,#fff8 0 12%,transparent 30%);animation:cityCloudMove 90s linear infinite alternate}@keyframes cityCloudMove{to{transform:translateX(20vw)}}#cityArrival .city-rain{position:absolute;inset:-20%;z-index:4;opacity:0;pointer-events:none;background:repeating-linear-gradient(105deg,transparent 0 18px,#dcecff66 19px 20px,transparent 21px 34px);animation:rainFall .45s linear infinite;transition:opacity 4s}@keyframes rainFall{to{transform:translate(-8%,18%)}}#cityArrival .city-fog{position:absolute;left:-20%;right:-20%;bottom:5%;height:35%;z-index:3;opacity:0;pointer-events:none;background:linear-gradient(180deg,transparent,#bdccd866,transparent);filter:blur(18px);animation:cityCloudMove 35s ease-in-out infinite alternate;transition:opacity 6s}#cityArrival .city-weather-label{position:absolute;top:22px;right:22px;z-index:8;color:#fff;font:10px Manrope;letter-spacing:.18em;text-shadow:0 2px 12px #000}#cityArrival .city-building:before{opacity:var(--lights);transition:opacity 8s}#cityArrival.day{--sky1:#4a91bb;--sky2:#acd1d7;--sky3:#d7c8a8;--lights:.12}#cityArrival.sunset{--sky1:#26395d;--sky2:#d17c64;--sky3:#e9b27b;--lights:.55}#cityArrival.night{--sky1:#030817;--sky2:#101d32;--sky3:#28364b;--lights:1}#cityArrival.dawn{--sky1:#273d63;--sky2:#d18f83;--sky3:#e9c29b;--lights:.65}#cityArrival.night .city-sun{opacity:0}#cityArrival.rain .city-rain,#cityArrival.storm .city-rain{opacity:.85}#cityArrival.storm .city-rain{opacity:1}#cityArrival.foggy .city-fog{opacity:.9}#cityArrival.snowing .city-rain{opacity:.55;background-image:radial-gradient(circle,#fff 0 1.5px,transparent 2px),radial-gradient(circle,#dcecff 0 1px,transparent 2px);background-size:47px 53px,83px 91px;animation:rainFall 7s linear infinite}#cityLogout{position:absolute;right:22px;bottom:22px;z-index:10;border:1px solid #d7bd80aa;background:#08111de8;color:#f0e6d0;padding:13px 20px;font:10px Manrope;letter-spacing:.18em;cursor:pointer}#cityArrival:not(.visible) #cityLogout{display:none}body.arrived #auth,body.arrived #admin,body.arrived #player,body.arrived #help{display:none!important}body.arrived #space{opacity:0;pointer-events:none}body.departing #space{opacity:1}body.departing #cityLogout{opacity:0}@media(max-width:600px){#cityLogout{right:12px;bottom:14px;padding:12px 15px}}
 /* Cidade viva: ciclos de luz, clima e controles exclusivos da sessão. */
 body.arrived #musicToggle{display:none!important}
-#cityArrival{isolation:isolate}
+#cityArrival{isolation:isolate;pointer-events:none}#cityArrival #cityLogout{pointer-events:auto;z-index:30;display:block}#cityArrival:not(.visible) #cityLogout{display:none}#cityArrival.visible #cityLogout{display:block;pointer-events:auto}
 #cityArrival .city-sky{z-index:0}
 #cityArrival .city-sun{z-index:1;transition:top 18s linear,left 18s linear,opacity 5s}
 #cityArrival .city-clouds{z-index:2;mix-blend-mode:screen}
@@ -109,13 +109,17 @@ body.arrived #musicToggle{display:none!important}
 #cityArrival.storm:after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;background:#dceaff;opacity:0;animation:cityLightning 9s infinite}
 @keyframes cityLightning{0%,92%,94%,100%{opacity:0}92.5%{opacity:.35}93%{opacity:.04}93.4%{opacity:.22}}
 #cityArrival.night .city-clouds{opacity:.25;filter:blur(15px)}
+#cityArrival.night .city-sky{background:linear-gradient(180deg,#020611 0%,#071326 48%,#17243a 100%)!important}
+#cityArrival.night .city-building:before{opacity:1!important;filter:brightness(1.45);}
+#cityArrival.night .city-sun{opacity:0!important}
+#cityArrival.night:before{background:radial-gradient(ellipse at 50% 68%,#24334c33,transparent 42%),linear-gradient(180deg,#02061133 0%,#050a15aa 100%)}
 #cityArrival.day .city-clouds{opacity:.62}
 #cityArrival.snowing .city-clouds{opacity:.72}
 #cityArrival .city-building{filter:brightness(calc(.72 + var(--lights)*.42));transition:filter 8s}
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
 <button id="musicToggle" type="button" aria-pressed="false" aria-label="Ativar música"><span class="music-icon">♫</span><span id="musicLabel">ATIVAR MÚSICA</span></button>
-<div id="cityArrival" aria-hidden="true"><div class="city-sky"></div><div class="city-clouds"></div><div class="city-rain"></div><div class="city-fog"></div><div class="city-weather-label" id="cityWeatherLabel">PÔR DO SOL · TEMPO LIMPO</div><div class="city-sun"></div><div class="city-haze"></div><div class="city-caption"><small>NOVERA · CONTINENTE CENTRAL</small><h2>CAPITAL DE VHALOR</h2><p>AS PORTAS DA CIDADE ESTÃO ABERTAS</p></div><div class="city-skyline" aria-hidden="true"><div class="city-building " style="height:24%"></div><div class="city-building " style="height:61%"></div><div class="city-building " style="height:34%"></div><div class="city-building " style="height:71%"></div><div class="city-building " style="height:44%"></div><div class="city-building " style="height:81%"></div><div class="city-building " style="height:54%"></div><div class="city-building " style="height:27%"></div><div class="city-building " style="height:64%"></div><div class="city-building tower" style="height:37%"></div><div class="city-building " style="height:74%"></div><div class="city-building " style="height:47%"></div><div class="city-building " style="height:84%"></div><div class="city-building " style="height:57%"></div><div class="city-building " style="height:30%"></div><div class="city-building " style="height:67%"></div><div class="city-building " style="height:40%"></div><div class="city-building " style="height:77%"></div><div class="city-building " style="height:50%"></div></div><div class="city-road"></div><div class="city-ground"></div><button id="cityLogout" type="button">⟵ DESCONECTAR</button></div>
+<div id="cityArrival" aria-hidden="true"><div class="city-sky"></div><div class="city-clouds"></div><div class="city-rain"></div><div class="city-fog"></div><div class="city-weather-label" id="cityWeatherLabel">PÔR DO SOL · TEMPO LIMPO</div><div class="city-sun"></div><div class="city-haze"></div><div class="city-caption"><small>POREMITA · PLANETA NOVERA</small><h2>LORVU</h2><p>CAPITAL DE POREMITA</p></div><div class="city-skyline" aria-hidden="true"><div class="city-building " style="height:24%"></div><div class="city-building " style="height:61%"></div><div class="city-building " style="height:34%"></div><div class="city-building " style="height:71%"></div><div class="city-building " style="height:44%"></div><div class="city-building " style="height:81%"></div><div class="city-building " style="height:54%"></div><div class="city-building " style="height:27%"></div><div class="city-building " style="height:64%"></div><div class="city-building tower" style="height:37%"></div><div class="city-building " style="height:74%"></div><div class="city-building " style="height:47%"></div><div class="city-building " style="height:84%"></div><div class="city-building " style="height:57%"></div><div class="city-building " style="height:30%"></div><div class="city-building " style="height:67%"></div><div class="city-building " style="height:40%"></div><div class="city-building " style="height:77%"></div><div class="city-building " style="height:50%"></div></div><div class="city-road"></div><div class="city-ground"></div><button id="cityLogout" type="button">⟵ DESCONECTAR</button></div>
 <header><span>VHALOR</span><span class="tag">REGISTRO DE ACESSO · 2013</span></header>
 <main><section class="hero"><h1>VHALOR</h1><p>UM MUNDO ALÉM DO CONHECIDO</p><div class="actions"><button class="btn primary" id="start">INICIAR</button><button class="btn" id="support">SUPORTE</button></div></section></main>
 
@@ -201,22 +205,29 @@ new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
   {cls:'storm',name:'TEMPESTADE'},
   {cls:'snowing',name:'NEVE LEVE'}
  ];
- let phase=0,weather=0,active=false;
+ let phase=0,weather=0,active=false,phaseTimer=null,weatherTimer=null;
  function apply(){
   city.classList.remove('dawn','day','sunset','night','clear','cloudy','rain','foggy','storm','snowing');
   city.classList.add(phases[phase].cls,weathers[weather].cls);
   if(sun){sun.style.top=phases[phase].sunTop;sun.style.left=phases[phase].sunLeft}
   label.textContent=phases[phase].name+' · '+weathers[weather].name;
+  city.dataset.timeOfDay=phases[phase].cls;
  }
  function nextPhase(){phase=(phase+1)%phases.length;apply()}
  function nextWeather(){
-  // Mantém o clima mais intenso menos frequente; neve aparece como evento raro.
   const pool=[0,0,1,1,2,3,4,5];weather=pool[Math.floor(Math.random()*pool.length)];apply();
  }
- function start(){if(active)return;active=true;apply();setInterval(nextPhase,45000);setInterval(nextWeather,28000)}
- window.VhalorCityEnvironment={start};
- const observer=new MutationObserver(()=>{if(city.classList.contains('visible'))start()});
+ function start(){
+  if(active)return;active=true;phase=0;weather=0;apply();
+  // Um ciclo completo dura 80 segundos: a noite chega em aproximadamente 60 segundos.
+  phaseTimer=setInterval(nextPhase,20000);
+  weatherTimer=setInterval(nextWeather,26000);
+ }
+ function stop(){if(phaseTimer)clearInterval(phaseTimer);if(weatherTimer)clearInterval(weatherTimer);phaseTimer=weatherTimer=null;active=false}
+ window.VhalorCityEnvironment={start,stop,apply};
+ const observer=new MutationObserver(()=>{if(city.classList.contains('visible'))start();else stop()});
  observer.observe(city,{attributes:true,attributeFilter:['class']});
+ if(city.classList.contains('visible'))start();
 })();
 </script>
 <script type="module" src="./auth.js"></script>
@@ -386,15 +397,15 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
     const raw=Math.min(1,(now-started)/duration),eased=raw<.5?4*raw*raw*raw:1-Math.pow(-2*raw+2,3)/2;
     camera.position.set(start.x+(end.x-start.x)*eased,start.y+(end.y-start.y)*eased,start.z+(end.z-start.z)*eased);
     camera.lookAt(0,0,0);
-    if(raw>.78)city.classList.add('visible');
+    if(raw>.78){city.classList.add('visible');window.VhalorCityEnvironment?.start?.();}
     if(raw<1)requestAnimationFrame(move);
     else{document.body.classList.remove('entering');document.body.classList.add('arrived');resolve()}
    }
    requestAnimationFrame(move);
   }),
-  depart:()=>new Promise(resolve=>{cinematicActive=true;const s={x:camera.position.x,y:camera.position.y,z:camera.position.z},e={x:0,y:0,z:12.6},t=performance.now(),d=5200,c=document.getElementById('cityArrival');document.body.classList.remove('arrived');document.body.classList.add('departing');function m(n){const r=Math.min(1,(n-t)/d),v=r<.5?4*r*r*r:1-Math.pow(-2*r+2,3)/2;camera.position.set(s.x+(e.x-s.x)*v,s.y+(e.y-s.y)*v,s.z+(e.z-s.z)*v);camera.lookAt(0,0,0);if(r>.12)c.classList.remove('visible');if(r<1)requestAnimationFrame(m);else{document.body.classList.remove('departing','entering');cinematicActive=false;resolve()}}requestAnimationFrame(m)}),
+  depart:()=>new Promise(resolve=>{cinematicActive=true;const s={x:camera.position.x,y:camera.position.y,z:camera.position.z},e={x:0,y:0,z:12.6},t=performance.now(),d=5200,c=document.getElementById('cityArrival');document.body.classList.remove('arrived');document.body.classList.add('departing');function m(n){const r=Math.min(1,(n-t)/d),v=r<.5?4*r*r*r:1-Math.pow(-2*r+2,3)/2;camera.position.set(s.x+(e.x-s.x)*v,s.y+(e.y-s.y)*v,s.z+(e.z-s.z)*v);camera.lookAt(0,0,0);if(r>.12){c.classList.remove('visible');window.VhalorCityEnvironment?.stop?.();}if(r<1)requestAnimationFrame(m);else{document.body.classList.remove('departing','entering');cinematicActive=false;resolve()}}requestAnimationFrame(m)}),
   reset:()=>{
-   cinematicActive=false;document.body.classList.remove('arrived','entering');
+   window.VhalorCityEnvironment?.stop?.();cinematicActive=false;document.body.classList.remove('arrived','entering');
    const city=document.getElementById('cityArrival');city.classList.remove('visible');
    camera.position.set(0,0,12.6);camera.lookAt(0,0,0);
   }
