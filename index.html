@@ -116,6 +116,15 @@ body.arrived #musicToggle{display:none!important}
 #cityArrival.day .city-clouds{opacity:.62}
 #cityArrival.snowing .city-clouds{opacity:.72}
 #cityArrival .city-building{filter:brightness(calc(.72 + var(--lights)*.42));transition:filter 8s}
+
+/* Correções de regressão: botão real e noite visivelmente escura. */
+#cityArrival .city-sky{position:absolute;inset:0;background:linear-gradient(180deg,var(--sky1,#26395d),var(--sky2,#d17c64) 58%,var(--sky3,#e9b27b));transition:background 8s linear}
+#cityArrival.night .city-sky{background:linear-gradient(180deg,#020611 0%,#071326 58%,#18243a 100%)!important}
+#cityArrival.night .city-haze{opacity:.18}
+#cityArrival.night .city-building{filter:brightness(.8)}
+#cityArrival.night .city-building:before{opacity:1!important;filter:brightness(1.8);box-shadow:0 0 10px #ffd88b55}
+#cityArrival .city-building:before{opacity:var(--lights,.12)}
+#cityLogout{display:block;pointer-events:auto}
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
 <button id="musicToggle" type="button" aria-pressed="false" aria-label="Ativar música"><span class="music-icon">♫</span><span id="musicLabel">ATIVAR MÚSICA</span></button>
