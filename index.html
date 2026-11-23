@@ -347,6 +347,48 @@ button.btn:hover,.btn:hover{transform:translateY(-1px);box-shadow:0 5px 18px #00
 #cityArrival .car-five{top:34%!important;animation-duration:25s!important;animation-delay:-20s!important}
 @keyframes lorvuCarAcross{from{transform:translate(-14vw,-50%) scale(.82)}to{transform:translate(114vw,-50%) scale(.82)}}
 @keyframes lorvuCarAcrossReverse{from{transform:translate(114vw,-50%) scale(.82) scaleX(-1)}to{transform:translate(-14vw,-50%) scale(.82) scaleX(-1)}}
+
+/* Hotfix definitivo: carros desenhados e animados dentro da pista inferior horizontal. */
+#cityArrival .city-road{
+ position:absolute!important;left:0!important;right:0!important;width:100%!important;
+ bottom:7%!important;height:12%!important;z-index:30!important;
+ clip-path:none!important;
+ background:linear-gradient(180deg,#273344 0%,#111b29 18%,#354052 50%,#111b29 100%)!important;
+ border-top:2px solid #a9b6c866;border-bottom:2px solid #050a11!important;
+ opacity:1!important;visibility:visible!important;
+}
+#cityArrival .city-road:after{
+ content:""!important;position:absolute!important;left:0!important;right:0!important;
+ top:50%!important;bottom:auto!important;width:auto!important;height:0!important;
+ border:0!important;border-top:2px dashed #e6c58a!important;opacity:.8;
+}
+#cityArrival .lorvu-traffic{
+ display:block!important;position:absolute!important;left:0!important;right:0!important;
+ width:100%!important;bottom:7%!important;height:12%!important;top:auto!important;
+ z-index:31!important;overflow:hidden!important;clip-path:none!important;
+ visibility:visible!important;opacity:1!important;pointer-events:none!important;
+}
+#cityArrival .lorvu-car{
+ display:block!important;position:absolute!important;left:0!important;right:auto!important;
+ bottom:auto!important;top:50%!important;width:clamp(38px,5vw,64px)!important;
+ height:clamp(16px,2vw,23px)!important;border-radius:8px 11px 4px 4px!important;
+ background:linear-gradient(180deg,#e6edf3 0 18%,var(--car-color,#a33b45) 19% 100%)!important;
+ box-shadow:0 3px 9px #000c!important;opacity:1!important;visibility:visible!important;
+ transform:translate3d(-90px,-50%,0)!important;
+ animation:lorvuVisibleForward 18s linear infinite!important;
+ filter:none!important;
+}
+#cityArrival .lorvu-car:before{content:""!important;display:block!important;position:absolute!important;left:23%!important;top:-45%!important;width:52%!important;height:55%!important;background:linear-gradient(135deg,#b5d4e4,#31485e)!important;clip-path:polygon(18% 0,82% 0,100% 100%,0 100%)!important}
+#cityArrival .lorvu-car:after{content:""!important;display:block!important;position:absolute!important;left:8%!important;right:8%!important;bottom:-3px!important;height:5px!important;background:radial-gradient(circle at 18% 50%,#05070a 0 3px,transparent 4px),radial-gradient(circle at 82% 50%,#05070a 0 3px,transparent 4px)!important}
+#cityArrival .lorvu-car i,#cityArrival .lorvu-car b{display:block!important;position:absolute!important;z-index:3!important;right:-2px!important;top:35%!important;width:4px!important;height:5px!important;background:#fff0b0!important;box-shadow:0 0 7px #ffe9a9!important}
+#cityArrival .lorvu-car b{left:-2px!important;right:auto!important;background:#ff5252!important}
+#cityArrival .car-one{top:34%!important;animation:lorvuVisibleForward 19s linear -3s infinite!important}
+#cityArrival .car-two{top:68%!important;animation:lorvuVisibleReverse 24s linear -10s infinite!important}
+#cityArrival .car-three{top:34%!important;animation:lorvuVisibleForward 27s linear -17s infinite!important}
+#cityArrival .car-four{top:68%!important;animation:lorvuVisibleReverse 22s linear -6s infinite!important}
+#cityArrival .car-five{top:34%!important;animation:lorvuVisibleForward 25s linear -20s infinite!important}
+@keyframes lorvuVisibleForward{from{transform:translate3d(-90px,-50%,0)}to{transform:translate3d(calc(100vw + 90px),-50%,0)}}
+@keyframes lorvuVisibleReverse{from{transform:translate3d(calc(100vw + 90px),-50%,0) scaleX(-1)}to{transform:translate3d(-90px,-50%,0) scaleX(-1)}}
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
 <button id="musicToggle" type="button" aria-pressed="false" aria-label="Ativar música"><span class="music-icon">♫</span><span id="musicLabel">ATIVAR MÚSICA</span></button>
