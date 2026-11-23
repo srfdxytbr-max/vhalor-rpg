@@ -17,23 +17,23 @@ body.entering .planet{transform:translate(-50%,-50%) scale(6);filter:brightness(
 @media(max-width:600px){.planet{width:115vw;top:38%}.hero{margin-top:36vh}.hero p{font-size:9px;letter-spacing:.2em}.actions{flex-direction:column;align-items:center}.btn{width:210px}.tag{display:none}.panel{padding:26px 22px}}
 .admin-card{border:1px solid #c9b27d66;background:#080e18;padding:15px;margin:14px 0}.admin-card strong{color:#e6d4a8}.admin-label{font-size:10px;letter-spacing:.15em;color:#c9b27d;text-transform:uppercase}.admin-actions{display:flex;gap:10px;flex-wrap:wrap}.admin-actions button{flex:1}.admin-warning{color:#e6c986;font-size:11px;line-height:1.6;border-left:2px solid #c9b27d;padding-left:10px}@keyframes panelGlow{50%{box-shadow:0 20px 80px #000b,0 0 28px #b89b5b18}}.panel.show{animation:appear .3s ease,panelGlow 5s ease-in-out infinite}/* CINEMATIC SPACE */
 #space{background:radial-gradient(ellipse at 50% 48%,#20364c 0%,#101b2b 42%,#050914 76%,#010207 100%)}
-#starfield{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+#world3d{position:absolute;inset:0;width:100%;height:100%;z-index:1;display:block}#starfield{position:absolute;inset:0;width:100%;height:100%;z-index:0}
 .nebula{position:absolute;width:55vw;height:35vw;max-height:520px;border-radius:50%;filter:blur(65px);opacity:.13;pointer-events:none;mix-blend-mode:screen}
 .nebula-a{left:-15%;top:8%;background:radial-gradient(ellipse,#4c7198,transparent 70%);animation:nebulaDrift 38s ease-in-out infinite alternate}
 .nebula-b{right:-18%;bottom:-5%;background:radial-gradient(ellipse,#547c83,transparent 70%);animation:nebulaDrift 48s ease-in-out infinite alternate-reverse}
 @keyframes nebulaDrift{to{transform:translate(8vw,-5vh) scale(1.2)}}
-.planet{z-index:1;width:min(66vw,700px);top:48%;overflow:hidden;background:radial-gradient(ellipse at 28% 30%,#a5b79a 0 3%,transparent 3.5%),radial-gradient(ellipse at 35% 38%,#728e70 0 10%,transparent 10.8%),radial-gradient(ellipse at 63% 58%,#8d9b76 0 13%,transparent 13.8%),radial-gradient(ellipse at 56% 28%,#b4b49a 0 4%,transparent 4.8%),radial-gradient(ellipse at 46% 68%,#587d69 0 12%,transparent 12.8%),repeating-linear-gradient(105deg,transparent 0 30px,#b3c8bb12 31px 33px),linear-gradient(145deg,#7eabb2 0%,#315d70 42%,#17344e 75%,#08172a);box-shadow:inset -105px -28px 145px #01040c,inset 22px 10px 65px #e4f5e866,0 0 0 2px #c5eaff55,0 0 32px #85c8ed66,0 0 105px #477ca655;animation:planetFloat 20s ease-in-out infinite alternate,planetTurn 100s linear infinite}
+.planet{display:none!important;z-index:1;width:min(66vw,700px);top:48%;overflow:hidden;background:radial-gradient(ellipse at 28% 30%,#a5b79a 0 3%,transparent 3.5%),radial-gradient(ellipse at 35% 38%,#728e70 0 10%,transparent 10.8%),radial-gradient(ellipse at 63% 58%,#8d9b76 0 13%,transparent 13.8%),radial-gradient(ellipse at 56% 28%,#b4b49a 0 4%,transparent 4.8%),radial-gradient(ellipse at 46% 68%,#587d69 0 12%,transparent 12.8%),repeating-linear-gradient(105deg,transparent 0 30px,#b3c8bb12 31px 33px),linear-gradient(145deg,#7eabb2 0%,#315d70 42%,#17344e 75%,#08172a);box-shadow:inset -105px -28px 145px #01040c,inset 22px 10px 65px #e4f5e866,0 0 0 2px #c5eaff55,0 0 32px #85c8ed66,0 0 105px #477ca655;animation:planetFloat 20s ease-in-out infinite alternate,planetTurn 100s linear infinite}
 @keyframes planetTurn{from{background-position:0 0,0 0,0 0,0 0,0 0,0 0,0 0}to{background-position:140px 0,-90px 20px,100px -30px,-60px 0,70px 25px,180px 0,0 0}}
 .planet:before{content:"";position:absolute;inset:-5%;border-radius:50%;background:repeating-linear-gradient(90deg,transparent 0 18%,#d4e6d51a 19%,transparent 20% 37%),radial-gradient(ellipse at 36% 42%,#9db28c55,transparent 42%);mix-blend-mode:screen;animation:cloudSweep 48s linear infinite}
 .planet:after{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(105deg,#dff8ff55 0%,transparent 30%,#02081755 70%,#01030b 100%),radial-gradient(ellipse at 50% 50%,transparent 56%,#b9eaff44 68%,transparent 72%);box-shadow:inset 0 0 35px #d5f4ff33}
 @keyframes cloudSweep{to{transform:translateX(8%) rotate(2deg)}}
 .planet-clouds{position:absolute;inset:-10%;border-radius:50%;background:repeating-linear-gradient(172deg,transparent 0 34px,#d8e8e51b 37px,#e9f3e512 43px,transparent 58px);filter:blur(5px);animation:cloudSweep 65s linear infinite}
 .planet-atmosphere{position:absolute;inset:-2%;border-radius:50%;box-shadow:0 0 22px 5px #9bdcff33,inset 0 0 18px #c7f2ff55;pointer-events:none}
-.sun-orbit{position:absolute;z-index:0;left:50%;top:48%;width:min(112vw,1250px);height:min(82vw,850px);transform:translate(-50%,-50%);border:1px solid #f5c87912;border-radius:50%;animation:sunOrbit 48s linear infinite}
+.sun-orbit{display:none;position:absolute;z-index:0;left:50%;top:48%;width:min(112vw,1250px);height:min(82vw,850px);transform:translate(-50%,-50%);border:1px solid #f5c87912;border-radius:50%;animation:sunOrbit 48s linear infinite}
 .sun{position:absolute;width:clamp(55px,8vw,105px);aspect-ratio:1;border-radius:50%;left:50%;top:-5%;transform:translateX(-50%);background:radial-gradient(circle at 40% 38%,#fff9d7 0 8%,#ffe8a2 22%,#ffae55 53%,#e66a35 72%,#a93c32 100%);box-shadow:0 0 24px 9px #ffb65b99,0 0 85px 35px #f18a4b55,0 0 180px 75px #e96b3b22;animation:sunPulse 5s ease-in-out infinite alternate}
 @keyframes sunOrbit{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
 @keyframes sunPulse{to{filter:brightness(1.25);box-shadow:0 0 34px 13px #ffca7199,0 0 105px 45px #f18a4b66,0 0 200px 90px #e96b3b33}}
-.moon{z-index:1;box-shadow:inset -12px -8px 18px #28313f,0 0 22px #dcecff88,0 0 55px #dcecff22}
+.moon{display:none!important;z-index:1;box-shadow:inset -12px -8px 18px #28313f,0 0 22px #dcecff88,0 0 55px #dcecff22}
 .moon.blue{box-shadow:inset -8px -6px 12px #1a3551,0 0 20px #76caff99,0 0 45px #76caff44}
 header{z-index:3}main{z-index:2}.hero{position:relative;padding:28px 34px 30px;border:1px solid #c9b27d3b;background:linear-gradient(145deg,#08111dc9,#080d18a6);backdrop-filter:blur(12px);box-shadow:0 18px 70px #0008,inset 0 1px #ffffff12;max-width:min(92vw,650px)}
 .hero:before{content:"";position:absolute;inset:7px;border:1px solid #d9c28b20;pointer-events:none}
@@ -43,7 +43,7 @@ header{z-index:3}main{z-index:2}.hero{position:relative;padding:28px 34px 30px;b
 @media(max-width:600px){.planet{width:112vw;top:43%}.sun-orbit{width:145vw;height:115vw}.hero{padding:24px 18px}.hero h1{letter-spacing:.24em}}
 @media(prefers-reduced-motion:reduce){.planet,.moon,.sun-orbit,.sun,.nebula,.planet-clouds{animation:none!important}*{scroll-behavior:auto!important;transition:none!important}}
 </style></head><body>
-<div id="space"><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
+<div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
 <header><span>VHALOR</span><span class="tag">REGISTRO DE ACESSO · 2013</span></header>
 <main><section class="hero"><h1>VHALOR</h1><p>UM MUNDO ALÉM DO CONHECIDO</p><div class="actions"><button class="btn primary" id="start">INICIAR</button><button class="btn" id="support">SUPORTE</button></div></section></main>
 <section class="panel" id="auth"><button class="close" data-close>×</button><h2 id="title">Acessar Vhalor</h2><p id="subtitle">Entre para continuar sua jornada.</p><form id="authForm"><label class="field"><span>IDENTIFICADOR / E-MAIL</span><input id="email" required maxlength="120" placeholder="ordep@gmail.com" autocomplete="username"></label><label class="field"><span>SENHA</span><input id="password" type="password" required minlength="6" autocomplete="current-password"></label><label class="field" id="confirmWrap" hidden><span>CONFIRMAR SENHA</span><input id="confirm" type="password" minlength="6"></label><button class="btn primary" id="submit" type="submit">ENTRAR</button></form><button class="switch" id="toggle">Não tem conta? Cadastre-se</button><div class="msg" id="authMsg"></div><p class="note">Protótipo beta: contas ficam somente neste navegador. Não use senhas reais ou reutilizadas. Antes do lançamento, será integrado um serviço de autenticação seguro.</p></section>
@@ -66,4 +66,66 @@ function meteor(){if(shooters.length<2)shooters.push({x:Math.random()*w*.85+w*.0
 function frame(t){ctx.clearRect(0,0,w,h);for(const s of stars){const tw=(Math.sin(t*.001*s.s+s.p)+1)*.5,alpha=s.a*(.35+tw*.65);ctx.globalAlpha=alpha;ctx.fillStyle=s.c;ctx.beginPath();ctx.arc(s.x,s.y,s.r*(.7+tw*.5),0,Math.PI*2);ctx.fill();if(tw>.94&&s.r>1){ctx.globalAlpha=alpha*.35;ctx.fillRect(s.x-4,s.y-.35,8,.7);ctx.fillRect(s.x-.35,s.y-4,.7,8)}}ctx.globalAlpha=1;if(Math.random()<.006)meteor();shooters=shooters.filter(m=>m.life++<m.max&&m.x<w+150&&m.y<h+150);for(const m of shooters){const fade=Math.max(0,Math.min(1,m.life/5,(m.max-m.life)/8)),x2=m.x-m.len,y2=m.y-m.len*.42,g=ctx.createLinearGradient(m.x,m.y,x2,y2);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(1,'rgba(210,233,255,'+(fade*.9)+')');ctx.strokeStyle=g;ctx.lineWidth=1.7;ctx.beginPath();ctx.moveTo(m.x,m.y);ctx.lineTo(x2,y2);ctx.stroke();ctx.fillStyle='#fff';ctx.globalAlpha=fade;ctx.beginPath();ctx.arc(m.x,m.y,2,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;m.x+=m.v;m.y+=m.v*.42}requestAnimationFrame(frame)}
 new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
 
+</script>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+(()=>{
+ const canvas=document.getElementById('world3d');if(!canvas)return;
+ const scene=new THREE.Scene();
+ const camera=new THREE.PerspectiveCamera(36,innerWidth/innerHeight,.1,100);
+ camera.position.set(0,0,8.7);
+ const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+ renderer.setPixelRatio(Math.min(devicePixelRatio,1.8));renderer.setSize(innerWidth,innerHeight);
+ renderer.outputColorSpace=THREE.SRGBColorSpace;
+ renderer.toneMapping=THREE.ACESFilmicToneMapping;
+ const world=new THREE.Group();scene.add(world);
+ // Procedural cartographic surface: oceans, irregular landmasses and polar ice.
+ function makeMap(){
+  const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,0,1024);g.addColorStop(0,'#c8e5df');g.addColorStop(.12,'#245a70');g.addColorStop(.5,'#17617a');g.addColorStop(.88,'#245a70');g.addColorStop(1,'#d9eee9');x.fillStyle=g;x.fillRect(0,0,2048,1024);
+  let seed=2013;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
+  const continents=[{cx:380,cy:360,rx:220,ry:160},{cx:750,cy:610,rx:190,ry:130},{cx:1100,cy:330,rx:260,ry:170},{cx:1480,cy:600,rx:210,ry:145},{cx:1830,cy:330,rx:180,ry:135},{cx:90,cy:760,rx:100,ry:70}];
+  for(const a of continents){
+   x.save();x.translate(a.cx,a.cy);x.rotate((rand()-.5)*.5);x.beginPath();
+   for(let i=0;i<=180;i++){const t=i/180*Math.PI*2,noise=.78+rand()*.35,px=Math.cos(t)*a.rx*noise,py=Math.sin(t)*a.ry*noise;i?x.lineTo(px,py):x.moveTo(px,py)}
+   x.closePath();const land=x.createLinearGradient(-a.rx,-a.ry,a.rx,a.ry);land.addColorStop(0,'#b0b28a');land.addColorStop(.3,'#617d5b');land.addColorStop(.65,'#315f4e');land.addColorStop(1,'#8b9470');x.fillStyle=land;x.fill();
+   // Mountain chains and forest texture flecks.
+   for(let j=0;j<260;j++){const px=(rand()*2-1)*a.rx*.85,py=(rand()*2-1)*a.ry*.8;if((px/a.rx)**2+(py/a.ry)**2<.72){x.fillStyle=rand()>.5?'#d0c49b55':'#173e3555';x.beginPath();x.ellipse(px,py,2+rand()*8,1+rand()*4,rand()*3,0,Math.PI*2);x.fill()}}
+   x.restore();
+  }
+  // Polar ice caps.
+  const ice=x.createLinearGradient(0,0,0,155);ice.addColorStop(0,'#f4fbff');ice.addColorStop(1,'#f4fbff00');x.fillStyle=ice;x.fillRect(0,0,2048,155);
+  const ice2=x.createLinearGradient(0,870,0,1024);ice2.addColorStop(0,'#f4fbff00');ice2.addColorStop(1,'#f4fbff');x.fillStyle=ice2;x.fillRect(0,870,2048,154);
+  const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;return tex;
+ }
+ function makeClouds(){
+  const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
+  for(let i=0;i<1000;i++){const px=rand2()*2048,py=rand2()*1024,rx=15+rand2()*85,ry=4+rand2()*20;x.fillStyle='rgba(235,246,245,'+(.025+rand2()*.08)+')';x.beginPath();x.ellipse(px,py,rx,ry,rand2(),0,Math.PI*2);x.fill()}
+  const t=new THREE.CanvasTexture(c);return t;
+ }
+ let seed2=42;function rand2(){seed2=(seed2*1664525+1013904223)>>>0;return seed2/4294967296}
+ const globe=new THREE.Mesh(new THREE.SphereGeometry(2,96,64),new THREE.MeshStandardMaterial({map:makeMap(),roughness:.92,metalness:0}));world.add(globe);
+ const clouds=new THREE.Mesh(new THREE.SphereGeometry(2.025,96,64),new THREE.MeshStandardMaterial({map:makeClouds(),transparent:true,opacity:.42,depthWrite:false}));world.add(clouds);
+ const atmo=new THREE.Mesh(new THREE.SphereGeometry(2.08,96,64),new THREE.MeshBasicMaterial({color:0x6dcfff,transparent:true,opacity:.105,side:THREE.BackSide,blending:THREE.AdditiveBlending}));world.add(atmo);
+ // The sun is FIXED in space. Only Vhalor rotates on its axis, creating the day/night cycle.
+ const sunLight=new THREE.DirectionalLight(0xffe2b3,3.1);sunLight.position.set(-8,3,5);scene.add(sunLight);
+ scene.add(new THREE.AmbientLight(0x8299b6,.38));
+ const sun=new THREE.Mesh(new THREE.SphereGeometry(.48,48,32),new THREE.MeshBasicMaterial({color:0xffc477}));
+ sun.position.set(-8,3,-5);scene.add(sun);
+ const sunGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:(()=>{const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),g=x.createRadialGradient(64,64,2,64,64,64);g.addColorStop(0,'rgba(255,224,160,.9)');g.addColorStop(.22,'rgba(255,167,91,.35)');g.addColorStop(1,'rgba(255,130,70,0)');x.fillStyle=g;x.fillRect(0,0,128,128);return new THREE.CanvasTexture(c)})(),transparent:true,depthWrite:false}));sunGlow.scale.set(3.6,3.6,1);sunGlow.position.copy(sun.position);scene.add(sunGlow);
+ // Two moons orbit on separate inclined planes, at different speeds.
+ function moon(radius,color,distance,speed,inclination,size){const pivot=new THREE.Group();pivot.rotation.x=inclination;pivot.rotation.z=inclination*.55;world.add(pivot);const m=new THREE.Mesh(new THREE.SphereGeometry(size,40,28),new THREE.MeshStandardMaterial({color,roughness:1}));m.position.set(distance,0,0);pivot.add(m);return pivot}
+ const moonA=moon(1,0xdfe8ef,3.05,.12,.16,.22),moonB=moon(1,0x72a9d4,3.65,.085,-.28,.12);
+ let last=0;
+ function resize(){const w=innerWidth,h=innerHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);renderer.setPixelRatio(Math.min(devicePixelRatio,1.8))}
+ addEventListener('resize',resize);
+ function animate(t){requestAnimationFrame(animate);const dt=Math.min((t-last)/1000||0,.05);last=t;
+  globe.rotation.y+=dt*.025;clouds.rotation.y+=dt*.031;world.rotation.z=Math.sin(t*.00008)*.035;
+  moonA.rotation.y+=dt*.12;moonB.rotation.y+=dt*.085;
+  // Slow camera breathing, while the star remains fixed and never circles the planet.
+  camera.position.x=Math.sin(t*.00008)*.10;camera.position.y=Math.cos(t*.00011)*.045;camera.lookAt(0,0,0);
+  renderer.render(scene,camera);
+ }
+ requestAnimationFrame(animate);
+})();
 </script></body></html>
