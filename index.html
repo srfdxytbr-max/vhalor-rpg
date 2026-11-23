@@ -65,6 +65,7 @@ header{z-index:3}main{z-index:2}.hero{position:relative;padding:28px 34px 30px;b
 body.entering #space{animation:none!important;opacity:1!important}
 #cityArrival{position:fixed;inset:0;z-index:2;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none;background:linear-gradient(180deg,#07101e 0%,#26364a 42%,#d08b62 76%,#1b202b 100%);transition:opacity 1.4s ease,visibility 1.4s}
 #cityArrival.visible{opacity:1;visibility:visible}
+body.arrived .hero,body.arrived header{opacity:0!important;pointer-events:none;transition:opacity .8s ease}
 #cityArrival:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 68%,#f5bd8055,transparent 38%),linear-gradient(180deg,transparent 50%,#090e18 100%)}
 .city-sun{position:absolute;width:clamp(90px,15vw,180px);height:clamp(90px,15vw,180px);border-radius:50%;left:68%;top:25%;background:radial-gradient(circle,#ffe9bd,#e8a36f 55%,#d47754 75%,transparent 76%);filter:drop-shadow(0 0 45px #f1b47c88)}
 .city-haze{position:absolute;left:-10%;right:-10%;bottom:20%;height:30%;background:linear-gradient(180deg,transparent,#d5a17b33,transparent);filter:blur(18px)}
@@ -269,12 +270,12 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
     camera.lookAt(0,0,0);
     if(raw>.78)city.classList.add('visible');
     if(raw<1)requestAnimationFrame(move);
-    else{document.body.classList.remove('entering');resolve()}
+    else{document.body.classList.remove('entering');document.body.classList.add('arrived');resolve()}
    }
    requestAnimationFrame(move);
   }),
   reset:()=>{
-   cinematicActive=false;
+   cinematicActive=false;document.body.classList.remove('arrived','entering');
    const city=document.getElementById('cityArrival');city.classList.remove('visible');
    camera.position.set(0,0,12.6);camera.lookAt(0,0,0);
   }
