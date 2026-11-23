@@ -82,36 +82,67 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
  // Procedural cartographic surface: oceans, irregular landmasses and polar ice.
  function makeMap(){
   const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
-  const g=x.createLinearGradient(0,0,0,1024);g.addColorStop(0,'#c8e5df');g.addColorStop(.12,'#245a70');g.addColorStop(.5,'#17617a');g.addColorStop(.88,'#245a70');g.addColorStop(1,'#d9eee9');x.fillStyle=g;x.fillRect(0,0,2048,1024);
+  x.fillStyle='#15516c';x.fillRect(0,0,2048,1024);
   let seed=2013;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
-  const continents=[/* Principal: a connected cluster of neighboring continental plates */{cx:690,cy:405,rx:205,ry:170},{cx:890,cy:555,rx:175,ry:125},{cx:1080,cy:370,rx:230,ry:155},{cx:1300,cy:555,rx:190,ry:135},{cx:1460,cy:345,rx:150,ry:115},{cx:1010,cy:720,rx:95,ry:65},/* Distant unknown continent on the far side of Novera */{cx:65,cy:505,rx:245,ry:205},{cx:1900,cy:555,rx:105,ry:120}];
+  const continents=[
+   {cx:690,cy:405,rx:205,ry:170},{cx:890,cy:555,rx:175,ry:125},{cx:1080,cy:370,rx:230,ry:155},
+   {cx:1300,cy:555,rx:190,ry:135},{cx:1460,cy:345,rx:150,ry:115},{cx:1010,cy:720,rx:95,ry:65},
+   /* Far-side polar continent: its northern half is icy; southern half is dense forest. */
+   {cx:65,cy:505,rx:245,ry:205,remote:true},{cx:1900,cy:555,rx:105,ry:120,remote:true}
+  ];
+  const paths=[];
   for(const a of continents){
-   x.save();x.translate(a.cx,a.cy);x.rotate((rand()-.5)*.5);x.beginPath();
-   for(let i=0;i<=180;i++){const t=i/180*Math.PI*2,noise=.78+rand()*.35,px=Math.cos(t)*a.rx*noise,py=Math.sin(t)*a.ry*noise;i?x.lineTo(px,py):x.moveTo(px,py)}
-   x.closePath();const land=x.createLinearGradient(-a.rx,-a.ry,a.rx,a.ry);land.addColorStop(0,'#c2bd8b');land.addColorStop(.3,'#78965a');land.addColorStop(.65,'#356c4d');land.addColorStop(1,'#a0a477');x.fillStyle=land;x.fill();
-   // Mountain chains and forest texture flecks.
-   for(let j=0;j<260;j++){const px=(rand()*2-1)*a.rx*.85,py=(rand()*2-1)*a.ry*.8;if((px/a.rx)**2+(py/a.ry)**2<.72){x.fillStyle=rand()>.5?'#d0c49b55':'#173e3555';x.beginPath();x.ellipse(px,py,2+rand()*8,1+rand()*4,rand()*3,0,Math.PI*2);x.fill()}}
-   x.restore();
+   x.save();x.translate(a.cx,a.cy);x.rotate((rand()-.5)*.24);x.beginPath();const pts=[];
+   for(let i=0;i<=220;i++){const t=i/220*Math.PI*2,noise=.88+rand()*.18,px=Math.cos(t)*a.rx*noise,py=Math.sin(t)*a.ry*noise;pts.push([px,py]);i?x.lineTo(px,py):x.moveTo(px,py)}
+   x.closePath();x.save();x.clip();
+   if(a.remote){
+    const split=x.createLinearGradient(0,-a.ry,0,a.ry);split.addColorStop(0,'#e9f2ee');split.addColorStop(.47,'#b8d1d0');split.addColorStop(.51,'#496f57');split.addColorStop(1,'#173f35');x.fillStyle=split;x.fillRect(-a.rx,-a.ry,a.rx*2,a.ry*2);
+    /* Frozen ridges in the upper half; dark evergreen canopy in the lower half. */
+    for(let j=0;j<520;j++){const px=(rand()*2-1)*a.rx,py=(rand()*2-1)*a.ry;if((px/a.rx)**2+(py/a.ry)**2<.9){if(py<0){x.fillStyle=rand()>.5?'#ffffff66':'#77999a88';x.beginPath();x.moveTo(px,py-8-rand()*12);x.lineTo(px-8-rand()*8,py+5);x.lineTo(px+8+rand()*8,py+5);x.fill()}else{x.fillStyle=rand()>.5?'#0c302b99':'#80a06a66';x.beginPath();x.ellipse(px,py,2+rand()*8,4+rand()*12,rand()*3,0,Math.PI*2);x.fill()}}}
+   }else{
+    const land=x.createLinearGradient(-a.rx,-a.ry,a.rx,a.ry);land.addColorStop(0,'#b6a978');land.addColorStop(.28,'#77965b');land.addColorStop(.62,'#32694c');land.addColorStop(1,'#a0a477');x.fillStyle=land;x.fillRect(-a.rx,-a.ry,a.rx*2,a.ry*2);
+    for(let j=0;j<360;j++){const px=(rand()*2-1)*a.rx,py=(rand()*2-1)*a.ry;if((px/a.rx)**2+(py/a.ry)**2<.78){x.fillStyle=rand()>.5?'#d4c89a66':'#163e3455';x.beginPath();x.ellipse(px,py,2+rand()*8,1+rand()*5,rand()*3,0,Math.PI*2);x.fill()}}
+   }
+   x.restore();x.restore();paths.push(a);
   }
-  // Polar ice caps.
   const ice=x.createLinearGradient(0,0,0,155);ice.addColorStop(0,'#f4fbff');ice.addColorStop(1,'#f4fbff00');x.fillStyle=ice;x.fillRect(0,0,2048,155);
   const ice2=x.createLinearGradient(0,870,0,1024);ice2.addColorStop(0,'#f4fbff00');ice2.addColorStop(1,'#f4fbff');x.fillStyle=ice2;x.fillRect(0,870,2048,154);
   const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;return tex;
  }
  function makeClouds(){
-  /* Transparent PNG-like cloud texture generated at runtime: layered wisps and soft billows. */
+  /* High-resolution transparent cloud atlas: broad realistic cloud banks plus fine wisps. */
   const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
-  for(let layer=0;layer<4;layer++){const count=420-layer*65;for(let i=0;i<count;i++){const px=rand2()*2048,py=rand2()*1024,rx=18+rand2()*105,ry=5+rand2()*27,alpha=.018+rand2()*.055;x.save();x.translate(px,py);x.rotate((rand2()-.5)*.35);const g=x.createRadialGradient(0,0,2,0,0,rx);g.addColorStop(0,'rgba(255,255,255,'+(alpha*2.1)+')');g.addColorStop(.48,'rgba(235,246,255,'+alpha+')');g.addColorStop(1,'rgba(230,244,255,0)');x.fillStyle=g;x.beginPath();x.ellipse(0,0,rx,ry,0,0,Math.PI*2);x.fill();x.restore()}}
+  let sd=91;const rr=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296};
+  for(let band=0;band<5;band++){
+   const n=170-band*18;
+   for(let i=0;i<n;i++){
+    const px=rr()*2048,py=rr()*1024,rx=35+rr()*115,ry=10+rr()*34,alpha=.12+rr()*.18;
+    x.save();x.translate(px,py);x.rotate((rr()-.5)*.55);
+    const g=x.createRadialGradient(0,0,rx*.05,0,0,rx);
+    g.addColorStop(0,'rgba(255,255,255,'+(alpha*1.5)+')');g.addColorStop(.38,'rgba(247,252,255,'+alpha+')');g.addColorStop(1,'rgba(235,246,255,0)');
+    x.fillStyle=g;x.beginPath();x.ellipse(0,0,rx,ry,0,0,Math.PI*2);x.fill();
+    /* Small cumulus lobes create a natural broken silhouette. */
+    for(let k=0;k<4;k++){const ox=(rr()-.5)*rx,oy=(rr()-.5)*ry*.8,rad=ry*(.35+rr()*.7);x.globalAlpha=.55;x.fillStyle='rgba(255,255,255,'+alpha+')';x.beginPath();x.arc(ox,oy,rad,0,Math.PI*2);x.fill()}
+    x.restore();
+   }
+  }
   const t=new THREE.CanvasTexture(c);t.wrapS=THREE.RepeatWrapping;t.colorSpace=THREE.SRGBColorSpace;return t;
  }
  let seed2=42;function rand2(){seed2=(seed2*1664525+1013904223)>>>0;return seed2/4294967296}
  const globe=new THREE.Mesh(new THREE.SphereGeometry(2,96,64),new THREE.MeshStandardMaterial({map:makeMap(),roughness:.78,metalness:0}));world.add(globe);
- const clouds=new THREE.Mesh(new THREE.SphereGeometry(2.025,96,64),new THREE.MeshStandardMaterial({map:makeClouds(),transparent:true,opacity:.68,depthWrite:false}));world.add(clouds);
+ const clouds=new THREE.Mesh(new THREE.SphereGeometry(2.025,96,64),new THREE.MeshBasicMaterial({map:makeClouds(),transparent:true,opacity:.92,depthWrite:false,side:THREE.FrontSide}));world.add(clouds);
  // Warm city lights on the principal continent, visible only on the night side.
  function makeCityLights(){
   const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
-  const clusters=[{cx:690,cy:405,n:95},{cx:890,cy:555,n:70},{cx:1080,cy:370,n:110},{cx:1300,cy:555,n:80},{cx:1460,cy:345,n:48}];
-  for(const city of clusters){for(let i=0;i<city.n;i++){const a=rand2()*Math.PI*2,r=Math.sqrt(rand2())*95,px=city.cx+Math.cos(a)*r,py=city.cy+Math.sin(a)*r,sz=.8+rand2()*2.1;const glow=x.createRadialGradient(px,py,0,px,py,sz*5);glow.addColorStop(0,'rgba(255,224,151,.95)');glow.addColorStop(.3,'rgba(255,174,83,.55)');glow.addColorStop(1,'rgba(255,145,55,0)');x.fillStyle=glow;x.fillRect(px-sz*5,py-sz*5,sz*10,sz*10)}}
+  let sd=733;const rr=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296};
+  /* Every settlement is sampled inside the actual principal-continent land shapes. */
+  const regions=[{cx:690,cy:405,rx:205,ry:170,n:120},{cx:890,cy:555,rx:175,ry:125,n:95},{cx:1080,cy:370,rx:230,ry:155,n:145},{cx:1300,cy:555,rx:190,ry:135,n:105},{cx:1460,cy:345,rx:150,ry:115,n:75},{cx:1010,cy:720,rx:95,ry:65,n:35}];
+  for(const a of regions){for(let i=0;i<a.n;i++){
+   let px,py,tries=0;do{px=a.cx+(rr()*2-1)*a.rx*.82;py=a.cy+(rr()*2-1)*a.ry*.82;tries++}while(((px-a.cx)/a.rx)**2+((py-a.cy)/a.ry)**2>.58&&tries<30);
+   const size=1.4+rr()*2.2,glow=x.createRadialGradient(px,py,0,px,py,size*5);
+   glow.addColorStop(0,'rgba(255,239,190,1)');glow.addColorStop(.18,'rgba(255,197,112,.95)');glow.addColorStop(.55,'rgba(255,157,65,.42)');glow.addColorStop(1,'rgba(255,145,55,0)');
+   x.fillStyle=glow;x.fillRect(px-size*5,py-size*5,size*10,size*10);
+  }}
   const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;return tex;
  }
  const cityTex=makeCityLights();
@@ -132,7 +163,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
  function resize(){const w=innerWidth,h=innerHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);renderer.setPixelRatio(Math.min(devicePixelRatio,1.8))}
  addEventListener('resize',resize);
  function animate(t){requestAnimationFrame(animate);const dt=Math.min((t-last)/1000||0,.05);last=t;
-  globe.rotation.y+=dt*.025;clouds.rotation.y+=dt*.031;world.rotation.z=Math.sin(t*.00008)*.035;
+  globe.rotation.y+=dt*.025;clouds.rotation.y+=dt*.033;cityLayer.rotation.y=globe.rotation.y;world.rotation.z=Math.sin(t*.00008)*.035;
   moonA.rotation.y+=dt*.12;moonB.rotation.y+=dt*.085;
   // Slow camera breathing, while the star remains fixed and never circles the planet.
   camera.position.x=Math.sin(t*.00008)*.12;camera.position.y=Math.cos(t*.00011)*.06;camera.lookAt(0,0,0);
