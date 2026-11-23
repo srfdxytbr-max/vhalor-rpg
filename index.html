@@ -200,6 +200,21 @@ button.btn:hover,.btn:hover{transform:translateY(-1px);box-shadow:0 5px 18px #00
 /* Destaque visual da saudação personalizada (não do título LORVU). */
 #cityArrival #cityGreeting{position:absolute!important;left:50%!important;right:auto!important;top:clamp(175px,27vh,285px)!important;width:min(92vw,900px)!important;max-width:900px!important;margin:0!important;padding:0 12px!important;transform:translateX(-50%)!important;display:block!important;text-align:center!important;color:#f4e8ca!important;font-family:Cinzel,serif!important;font-size:clamp(30px,5.2vw,56px)!important;font-weight:600!important;letter-spacing:.035em!important;line-height:1.22!important;white-space:normal!important;overflow-wrap:anywhere!important;text-shadow:0 3px 18px #000e,0 0 28px #d6b97966!important;z-index:15!important;pointer-events:none!important;opacity:0;animation:cityGreetingIn 1.2s .5s ease forwards}
 @media(max-width:600px){#cityArrival #cityGreeting{top:clamp(155px,25vh,215px)!important;width:94vw!important;font-size:clamp(27px,7vw,38px)!important;line-height:1.25!important}}
+
+/* Correção específica da saudação: destaque grande sem competir com o nome da cidade. */
+#cityArrival .city-caption h2{font:500 clamp(25px,5vw,52px) Cinzel,serif;letter-spacing:.2em;line-height:1.25;color:#f2e5ca;margin:12px 0 8px;white-space:normal}
+#cityArrival .city-greeting,#cityArrival #cityGreeting{
+ position:absolute;top:clamp(175px,27vh,265px);left:50%;width:min(92%,850px);max-width:850px;
+ transform:translateX(-50%);z-index:13;margin:0;padding:0 12px;box-sizing:border-box;
+ text-align:center;color:#fff0d0;font-family:Cinzel,serif;font-size:clamp(30px,5.2vw,58px);
+ font-weight:700;letter-spacing:.025em;line-height:1.22;white-space:normal;overflow-wrap:anywhere;
+ text-shadow:0 3px 8px #000,0 0 24px #d6b97988;pointer-events:none;
+}
+#cityArrival #cityGreeting{animation:cityGreetingIn 1.2s .5s ease both}
+@media(max-width:600px){
+ #cityArrival .city-caption h2{font-size:clamp(25px,7vw,38px);letter-spacing:.16em}
+ #cityArrival .city-greeting,#cityArrival #cityGreeting{top:clamp(155px,25vh,205px);font-size:clamp(27px,7.5vw,40px);line-height:1.25;width:94%}
+}
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
 <button id="musicToggle" type="button" aria-pressed="false" aria-label="Ativar música"><span class="music-icon">♫</span><span id="musicLabel">ATIVAR MÚSICA</span></button>
