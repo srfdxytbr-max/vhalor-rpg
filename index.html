@@ -465,7 +465,7 @@ new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
  function start(){
   if(active)return;active=true;phase=0;weather=0;apply();
   // Cada fase dura 2 minutos. O sol atravessa o céu sempre no mesmo sentido; as luas cruzam o céu durante a noite.
-  phaseTimer=setInterval(nextPhase,90000);
+  phaseTimer=setInterval(nextPhase,40000);
   weatherTimer=setInterval(nextWeather,180000);
  }
  function stop(){if(phaseTimer)clearInterval(phaseTimer);if(weatherTimer)clearInterval(weatherTimer);phaseTimer=weatherTimer=null;active=false}
