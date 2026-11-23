@@ -84,7 +84,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
   const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
   const g=x.createLinearGradient(0,0,0,1024);g.addColorStop(0,'#c8e5df');g.addColorStop(.12,'#245a70');g.addColorStop(.5,'#17617a');g.addColorStop(.88,'#245a70');g.addColorStop(1,'#d9eee9');x.fillStyle=g;x.fillRect(0,0,2048,1024);
   let seed=2013;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
-  const continents=[{cx:690,cy:405,rx:205,ry:170},{cx:890,cy:555,rx:175,ry:125},{cx:1080,cy:370,rx:230,ry:155},{cx:1300,cy:555,rx:190,ry:135},{cx:1460,cy:345,rx:150,ry:115},{cx:1010,cy:720,rx:95,ry:65}];
+  const continents=[/* Principal: a connected cluster of neighboring continental plates */{cx:690,cy:405,rx:205,ry:170},{cx:890,cy:555,rx:175,ry:125},{cx:1080,cy:370,rx:230,ry:155},{cx:1300,cy:555,rx:190,ry:135},{cx:1460,cy:345,rx:150,ry:115},{cx:1010,cy:720,rx:95,ry:65},/* Distant unknown continent on the far side of Novera */{cx:65,cy:505,rx:245,ry:205},{cx:1900,cy:555,rx:105,ry:120}];
   for(const a of continents){
    x.save();x.translate(a.cx,a.cy);x.rotate((rand()-.5)*.5);x.beginPath();
    for(let i=0;i<=180;i++){const t=i/180*Math.PI*2,noise=.78+rand()*.35,px=Math.cos(t)*a.rx*noise,py=Math.sin(t)*a.ry*noise;i?x.lineTo(px,py):x.moveTo(px,py)}
@@ -99,13 +99,25 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
   const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;return tex;
  }
  function makeClouds(){
+  /* Transparent PNG-like cloud texture generated at runtime: layered wisps and soft billows. */
   const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
-  for(let i=0;i<1000;i++){const px=rand2()*2048,py=rand2()*1024,rx=15+rand2()*85,ry=4+rand2()*20;x.fillStyle='rgba(235,246,245,'+(.025+rand2()*.08)+')';x.beginPath();x.ellipse(px,py,rx,ry,rand2(),0,Math.PI*2);x.fill()}
-  const t=new THREE.CanvasTexture(c);return t;
+  for(let layer=0;layer<4;layer++){const count=420-layer*65;for(let i=0;i<count;i++){const px=rand2()*2048,py=rand2()*1024,rx=18+rand2()*105,ry=5+rand2()*27,alpha=.018+rand2()*.055;x.save();x.translate(px,py);x.rotate((rand2()-.5)*.35);const g=x.createRadialGradient(0,0,2,0,0,rx);g.addColorStop(0,'rgba(255,255,255,'+(alpha*2.1)+')');g.addColorStop(.48,'rgba(235,246,255,'+alpha+')');g.addColorStop(1,'rgba(230,244,255,0)');x.fillStyle=g;x.beginPath();x.ellipse(0,0,rx,ry,0,0,Math.PI*2);x.fill();x.restore()}}
+  const t=new THREE.CanvasTexture(c);t.wrapS=THREE.RepeatWrapping;t.colorSpace=THREE.SRGBColorSpace;return t;
  }
  let seed2=42;function rand2(){seed2=(seed2*1664525+1013904223)>>>0;return seed2/4294967296}
  const globe=new THREE.Mesh(new THREE.SphereGeometry(2,96,64),new THREE.MeshStandardMaterial({map:makeMap(),roughness:.78,metalness:0}));world.add(globe);
  const clouds=new THREE.Mesh(new THREE.SphereGeometry(2.025,96,64),new THREE.MeshStandardMaterial({map:makeClouds(),transparent:true,opacity:.68,depthWrite:false}));world.add(clouds);
+ // Warm city lights on the principal continent, visible only on the night side.
+ function makeCityLights(){
+  const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
+  const clusters=[{cx:690,cy:405,n:95},{cx:890,cy:555,n:70},{cx:1080,cy:370,n:110},{cx:1300,cy:555,n:80},{cx:1460,cy:345,n:48}];
+  for(const city of clusters){for(let i=0;i<city.n;i++){const a=rand2()*Math.PI*2,r=Math.sqrt(rand2())*95,px=city.cx+Math.cos(a)*r,py=city.cy+Math.sin(a)*r,sz=.8+rand2()*2.1;const glow=x.createRadialGradient(px,py,0,px,py,sz*5);glow.addColorStop(0,'rgba(255,224,151,.95)');glow.addColorStop(.3,'rgba(255,174,83,.55)');glow.addColorStop(1,'rgba(255,145,55,0)');x.fillStyle=glow;x.fillRect(px-sz*5,py-sz*5,sz*10,sz*10)}}
+  const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;return tex;
+ }
+ const cityTex=makeCityLights();
+ const cityMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,uniforms:{cityMap:{value:cityTex},sunDirection:{value:new THREE.Vector3(-8,3,5).normalize()},glow:{value:1.45}},vertexShader:`varying vec2 vUv;varying vec3 vNormal;varying vec3 vPosition;void main(){vUv=uv;vNormal=normalize(mat3(modelMatrix)*normal);vec4 wp=modelMatrix*vec4(position,1.0);vPosition=wp.xyz;gl_Position=projectionMatrix*viewMatrix*wp;}`,fragmentShader:`uniform sampler2D cityMap;uniform vec3 sunDirection;uniform float glow;varying vec2 vUv;varying vec3 vNormal;void main(){float night=smoothstep(.22,-.28,dot(normalize(vNormal),normalize(sunDirection)));vec4 lights=texture2D(cityMap,vUv);gl_FragColor=vec4(lights.rgb*glow,lights.a*night);}`});
+ const cityLayer=new THREE.Mesh(new THREE.SphereGeometry(2.012,96,64),cityMat);world.add(cityLayer);
+
  const atmo=new THREE.Mesh(new THREE.SphereGeometry(2.12,96,64),new THREE.MeshBasicMaterial({color:0x52caff,transparent:true,opacity:.19,side:THREE.BackSide,blending:THREE.AdditiveBlending}));world.add(atmo);
  // The sun is FIXED in space. Only Vhalor rotates on its axis, creating the day/night cycle.
  const sunLight=new THREE.DirectionalLight(0xffe2b3,3.1);sunLight.position.set(-8,3,5);scene.add(sunLight);
