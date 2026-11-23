@@ -145,10 +145,23 @@ body.vhalor-city .hero,body.vhalor-city header{opacity:0;pointer-events:none}
 #cityArrival.night .lorvu-car{filter:brightness(.75)}
 #cityArrival.night .lorvu-plane{opacity:.55}
 @media(prefers-reduced-motion:reduce){#cityArrival .lorvu-car,#cityArrival .lorvu-plane{animation-play-state:paused}}
+
+/* Céu noturno de Lorvu: estrelas cintilantes e meteoros ocasionais. */
+#cityArrival .lorvu-stars{position:absolute;z-index:1;inset:0 0 38%;pointer-events:none;opacity:0;transition:opacity 5s ease;overflow:hidden}
+#cityArrival.night .lorvu-stars{opacity:1}
+#cityArrival .lorvu-star{position:absolute;width:var(--s,2px);height:var(--s,2px);border-radius:50%;background:#fff8df;box-shadow:0 0 5px 1px #c9dcff88;opacity:.35;animation:lorvuTwinkle var(--d,3s) ease-in-out infinite alternate;animation-delay:var(--delay,0s)}
+@keyframes lorvuTwinkle{0%{opacity:.2;transform:scale(.7)}45%{opacity:.55}100%{opacity:1;transform:scale(1.35);filter:drop-shadow(0 0 4px #fff)}}
+#cityArrival .lorvu-shooting-stars{position:absolute;z-index:3;inset:0 0 35%;overflow:hidden;pointer-events:none;opacity:0;transition:opacity 3s}
+#cityArrival.night .lorvu-shooting-stars{opacity:1}
+#cityArrival .lorvu-shooting-stars i{position:absolute;top:12%;left:-25%;width:clamp(65px,9vw,130px);height:2px;background:linear-gradient(90deg,transparent,#dceaff,#fff);filter:drop-shadow(0 0 4px #d7e8ff);transform:rotate(-24deg);opacity:0;animation:lorvuMeteor 13s linear infinite}
+#cityArrival .lorvu-shooting-stars i:nth-child(2){top:35%;animation-delay:5.2s;animation-duration:17s;transform:rotate(-18deg) scale(.7)}
+#cityArrival .lorvu-shooting-stars i:nth-child(3){top:20%;animation-delay:10.5s;animation-duration:19s;transform:rotate(-29deg) scale(.85)}
+@keyframes lorvuMeteor{0%,8%{left:-25%;opacity:0}10%{opacity:.9}22%{left:125%;opacity:0}100%{left:125%;opacity:0}}
+@media(prefers-reduced-motion:reduce){#cityArrival .lorvu-star,#cityArrival .lorvu-shooting-stars i{animation:none}}
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
 <button id="musicToggle" type="button" aria-pressed="false" aria-label="Ativar música"><span class="music-icon">♫</span><span id="musicLabel">ATIVAR MÚSICA</span></button>
-<div id="cityArrival" aria-hidden="true"><div class="city-sky"></div><div class="city-clouds"></div><div class="city-rain"></div><div class="city-fog"></div><div class="city-weather-label" id="cityWeatherLabel">PÔR DO SOL · TEMPO LIMPO</div><div class="city-sun"></div><div class="city-haze"></div><div class="city-caption"><small>POREMITA · PLANETA NOVERA</small><h2>LORVU</h2><p>CAPITAL DE POREMITA</p></div><div class="city-skyline" aria-hidden="true"><div class="city-building " style="height:24%"></div><div class="city-building " style="height:61%"></div><div class="city-building " style="height:34%"></div><div class="city-building " style="height:71%"></div><div class="city-building " style="height:44%"></div><div class="city-building " style="height:81%"></div><div class="city-building " style="height:54%"></div><div class="city-building " style="height:27%"></div><div class="city-building " style="height:64%"></div><div class="city-building tower" style="height:37%"></div><div class="city-building " style="height:74%"></div><div class="city-building " style="height:47%"></div><div class="city-building " style="height:84%"></div><div class="city-building " style="height:57%"></div><div class="city-building " style="height:30%"></div><div class="city-building " style="height:67%"></div><div class="city-building " style="height:40%"></div><div class="city-building " style="height:77%"></div><div class="city-building " style="height:50%"></div></div><div class="city-road"></div><div class="lorvu-traffic" aria-hidden="true"><div class="lorvu-car car-one"><i></i><b></b></div><div class="lorvu-car car-two"><i></i><b></b></div><div class="lorvu-car car-three"><i></i><b></b></div></div><div class="lorvu-air-traffic" aria-hidden="true"><span class="lorvu-plane plane-one">✈</span><span class="lorvu-plane plane-two">✈</span></div><div class="city-ground"></div><button id="cityLogout" type="button">⟵ DESCONECTAR</button></div>
+<div id="cityArrival" aria-hidden="true"><div class="city-sky"></div><div class="lorvu-stars" aria-hidden="true"></div><div class="lorvu-shooting-stars" aria-hidden="true"><i></i><i></i><i></i></div><div class="city-clouds"></div><div class="city-rain"></div><div class="city-fog"></div><div class="city-weather-label" id="cityWeatherLabel">PÔR DO SOL · TEMPO LIMPO</div><div class="city-sun"></div><div class="city-haze"></div><div class="city-caption"><small>POREMITA · PLANETA NOVERA</small><h2>LORVU</h2><p>CAPITAL DE POREMITA</p></div><div class="city-skyline" aria-hidden="true"><div class="city-building " style="height:24%"></div><div class="city-building " style="height:61%"></div><div class="city-building " style="height:34%"></div><div class="city-building " style="height:71%"></div><div class="city-building " style="height:44%"></div><div class="city-building " style="height:81%"></div><div class="city-building " style="height:54%"></div><div class="city-building " style="height:27%"></div><div class="city-building " style="height:64%"></div><div class="city-building tower" style="height:37%"></div><div class="city-building " style="height:74%"></div><div class="city-building " style="height:47%"></div><div class="city-building " style="height:84%"></div><div class="city-building " style="height:57%"></div><div class="city-building " style="height:30%"></div><div class="city-building " style="height:67%"></div><div class="city-building " style="height:40%"></div><div class="city-building " style="height:77%"></div><div class="city-building " style="height:50%"></div></div><div class="city-road"></div><div class="lorvu-traffic" aria-hidden="true"><div class="lorvu-car car-one"><i></i><b></b></div><div class="lorvu-car car-two"><i></i><b></b></div><div class="lorvu-car car-three"><i></i><b></b></div></div><div class="lorvu-air-traffic" aria-hidden="true"><span class="lorvu-plane plane-one">✈</span><span class="lorvu-plane plane-two">✈</span></div><div class="city-ground"></div><button id="cityLogout" type="button">⟵ DESCONECTAR</button></div>
 <header><span>VHALOR</span><span class="tag">REGISTRO DE ACESSO · 2013</span></header>
 <main><section class="hero"><h1>VHALOR</h1><p>UM MUNDO ALÉM DO CONHECIDO</p><div class="actions"><button class="btn primary" id="start">INICIAR</button><button class="btn" id="support">SUPORTE</button></div></section></main>
 
@@ -220,6 +233,18 @@ new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
 (()=>{
  const city=document.getElementById('cityArrival'),label=document.getElementById('cityWeatherLabel'),sun=city?.querySelector('.city-sun');
  if(!city||!label)return;
+ const starField=city.querySelector('.lorvu-stars');
+ if(starField&&!starField.childElementCount){
+  const frag=document.createDocumentFragment();
+  for(let n=0;n<95;n++){
+   const star=document.createElement('i');star.className='lorvu-star';
+   star.style.left=(Math.random()*100)+'%';star.style.top=(Math.random()*100)+'%';
+   star.style.setProperty('--s',(Math.random()*1.7+0.8)+'px');
+   star.style.setProperty('--d',(Math.random()*3+1.8)+'s');
+   star.style.setProperty('--delay',(-Math.random()*5)+'s');frag.appendChild(star);
+  }
+  starField.appendChild(frag);
+ }
  const phases=[
   {name:'AMANHECER',cls:'dawn',sunTop:'18%',sunLeft:'18%'},
   {name:'DIA',cls:'day',sunTop:'12%',sunLeft:'48%'},
@@ -249,8 +274,8 @@ new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
  function start(){
   if(active)return;active=true;phase=0;weather=0;apply();
   // Um ciclo completo dura 80 segundos: a noite chega em aproximadamente 60 segundos.
-  phaseTimer=setInterval(nextPhase,20000);
-  weatherTimer=setInterval(nextWeather,26000);
+  phaseTimer=setInterval(nextPhase,120000);
+  weatherTimer=setInterval(nextWeather,180000);
  }
  function stop(){if(phaseTimer)clearInterval(phaseTimer);if(weatherTimer)clearInterval(weatherTimer);phaseTimer=weatherTimer=null;active=false}
  window.VhalorCityEnvironment={start,stop,apply};
