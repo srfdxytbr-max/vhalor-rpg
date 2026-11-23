@@ -115,33 +115,50 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
  function makeClouds(){
   const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
   let seed=42;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
-  for(let i=0;i<1000;i++){
-   const px=rand()*2048,py=rand()*1024,rx=15+rand()*85,ry=4+rand()*20,alpha=.025+rand()*.08;
+  // Soft cloud banks form the base layer.
+  for(let i=0;i<680;i++){
+   const px=rand()*2048,py=rand()*1024,rx=22+rand()*95,ry=6+rand()*23,alpha=.025+rand()*.065;
    const g=x.createRadialGradient(px,py,1,px,py,rx);
    g.addColorStop(0,'rgba(245,250,255,'+alpha+')');g.addColorStop(.65,'rgba(235,246,250,'+(alpha*.65)+')');g.addColorStop(1,'rgba(235,246,250,0)');
    x.fillStyle=g;x.beginPath();x.ellipse(px,py,rx,ry,rand()*3,0,Math.PI*2);x.fill();
   }
+  // Sharper, brighter cumulus highlights mixed among the softer clouds.
+  for(let i=0;i<155;i++){
+   const px=rand()*2048,py=rand()*1024,rx=12+rand()*42,ry=5+rand()*15;
+   x.save();x.translate(px,py);x.rotate((rand()-.5)*.8);
+   x.shadowColor='rgba(255,255,255,.25)';x.shadowBlur=5;
+   const g=x.createRadialGradient(0,-ry*.2,1,0,0,rx);
+   g.addColorStop(0,'rgba(255,255,255,.42)');g.addColorStop(.5,'rgba(247,251,255,.25)');g.addColorStop(1,'rgba(235,246,250,0)');
+   x.fillStyle=g;x.beginPath();x.ellipse(0,0,rx,ry,0,0,Math.PI*2);x.fill();x.restore();
+  }
   const tex=new THREE.CanvasTexture(c);tex.wrapS=THREE.RepeatWrapping;tex.colorSpace=THREE.SRGBColorSpace;return tex;
  }
  const cloudGroup=new THREE.Group();world.add(cloudGroup);
- const clouds=new THREE.Mesh(new THREE.SphereGeometry(2.025,96,64),new THREE.MeshBasicMaterial({map:makeClouds(),transparent:true,opacity:.78,depthWrite:false,side:THREE.FrontSide}));
+ const clouds=new THREE.Mesh(new THREE.SphereGeometry(2.025,96,64),new THREE.MeshBasicMaterial({map:makeClouds(),transparent:true,opacity:1.0,depthWrite:false,side:THREE.FrontSide}));
  cloudGroup.add(clouds);
   // Warm city lights on the principal continent, visible only on the night side.
  function makeCityLights(){
   const c=document.createElement('canvas');c.width=2048;c.height=1024;const x=c.getContext('2d');
   let sd=733;const rr=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296};
-  /* Every settlement is sampled inside the actual principal-continent land shapes. */
-  const regions=[{cx:690,cy:405,rx:205,ry:170,n:120},{cx:890,cy:555,rx:175,ry:125,n:95},{cx:1080,cy:370,rx:230,ry:155,n:145},{cx:1300,cy:555,rx:190,ry:135,n:105},{cx:1460,cy:345,rx:150,ry:115,n:75},{cx:1010,cy:720,rx:95,ry:65,n:35}];
-  for(const a of regions){for(let i=0;i<a.n;i++){
-   let px,py,tries=0;do{px=a.cx+(rr()*2-1)*a.rx*.82;py=a.cy+(rr()*2-1)*a.ry*.82;tries++}while(((px-a.cx)/a.rx)**2+((py-a.cy)/a.ry)**2>.58&&tries<30);
-   const size=1.4+rr()*2.2,glow=x.createRadialGradient(px,py,0,px,py,size*5);
-   glow.addColorStop(0,'rgba(255,239,190,1)');glow.addColorStop(.18,'rgba(255,197,112,.95)');glow.addColorStop(.55,'rgba(255,157,65,.42)');glow.addColorStop(1,'rgba(255,145,55,0)');
-   x.fillStyle=glow;x.fillRect(px-size*5,py-size*5,size*10,size*10);
-  }}
-  const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;return tex;
+  const regions=[{cx:690,cy:405,rx:205,ry:170,n:210},{cx:890,cy:555,rx:175,ry:125,n:165},{cx:1080,cy:370,rx:230,ry:155,n:260},{cx:1300,cy:555,rx:190,ry:135,n:190},{cx:1460,cy:345,rx:150,ry:115,n:125},{cx:1010,cy:720,rx:95,ry:65,n:60}];
+  for(const a of regions){
+   // Urban cores, branching corridors and smaller settlements.
+   const hubs=[];for(let j=0;j<3;j++)hubs.push({x:a.cx+(rr()-.5)*a.rx*.72,y:a.cy+(rr()-.5)*a.ry*.72});
+   for(let i=0;i<a.n;i++){
+    const hub=hubs[Math.floor(rr()*hubs.length)];
+    const angle=rr()*Math.PI*2,dist=Math.pow(rr(),1.55)*Math.min(a.rx,a.ry)*.62;
+    const px=hub.x+Math.cos(angle)*dist,py=hub.y+Math.sin(angle)*dist*.7;
+    if(((px-a.cx)/a.rx)**2+((py-a.cy)/a.ry)**2>.72)continue;
+    const r=.65+rr()*1.25;
+    x.fillStyle=rr()>.86?'rgba(255,238,190,.98)':'rgba(255,185,91,.9)';
+    x.beginPath();x.arc(px,py,r,0,Math.PI*2);x.fill();
+    if(rr()>.72){const glow=x.createRadialGradient(px,py,0,px,py,r*5);glow.addColorStop(0,'rgba(255,190,105,.38)');glow.addColorStop(1,'rgba(255,155,65,0)');x.fillStyle=glow;x.fillRect(px-r*5,py-r*5,r*10,r*10)}
+   }
+  }
+  const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;tex.magFilter=THREE.LinearFilter;tex.minFilter=THREE.LinearMipmapLinearFilter;return tex;
  }
  const cityTex=makeCityLights();
- const cityMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,uniforms:{cityMap:{value:cityTex},sunDirection:{value:new THREE.Vector3(-8,3,5).normalize()},glow:{value:1.45}},vertexShader:`varying vec2 vUv;varying vec3 vNormal;varying vec3 vPosition;void main(){vUv=uv;vNormal=normalize(mat3(modelMatrix)*normal);vec4 wp=modelMatrix*vec4(position,1.0);vPosition=wp.xyz;gl_Position=projectionMatrix*viewMatrix*wp;}`,fragmentShader:`uniform sampler2D cityMap;uniform vec3 sunDirection;uniform float glow;varying vec2 vUv;varying vec3 vNormal;void main(){float night=1.0-smoothstep(-.28,.22,dot(normalize(vNormal),normalize(sunDirection)));vec4 lights=texture2D(cityMap,vUv);gl_FragColor=vec4(lights.rgb*glow,lights.a*night);}`});
+ const cityMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,uniforms:{cityMap:{value:cityTex},sunDirection:{value:new THREE.Vector3(-8,3,5).normalize()},glow:{value:2.25}},vertexShader:`varying vec2 vUv;varying vec3 vNormal;varying vec3 vPosition;void main(){vUv=uv;vNormal=normalize(mat3(modelMatrix)*normal);vec4 wp=modelMatrix*vec4(position,1.0);vPosition=wp.xyz;gl_Position=projectionMatrix*viewMatrix*wp;}`,fragmentShader:`uniform sampler2D cityMap;uniform vec3 sunDirection;uniform float glow;varying vec2 vUv;varying vec3 vNormal;void main(){float night=1.0-smoothstep(-.12,.3,dot(normalize(vNormal),normalize(sunDirection)));vec4 lights=texture2D(cityMap,vUv);float cityMask=pow(lights.a,0.72);vec3 warm=lights.rgb*vec3(1.18,.78,.42)*glow;gl_FragColor=vec4(warm,cityMask*night*1.25);}`});
  const cityLayer=new THREE.Mesh(new THREE.SphereGeometry(2.012,96,64),cityMat);world.add(cityLayer);
 
  const atmo=new THREE.Mesh(new THREE.SphereGeometry(2.12,96,64),new THREE.MeshBasicMaterial({color:0x52caff,transparent:true,opacity:.19,side:THREE.BackSide,blending:THREE.AdditiveBlending}));world.add(atmo);
