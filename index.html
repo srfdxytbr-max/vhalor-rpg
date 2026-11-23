@@ -196,6 +196,10 @@ button.btn:hover,.btn:hover{transform:translateY(-1px);box-shadow:0 5px 18px #00
  #cityArrival .city-caption h2{font-size:clamp(38px,11vw,58px);letter-spacing:.12em}
  #cityArrival #cityGreeting{top:clamp(135px,24vh,190px);font-size:clamp(18px,5vw,25px)}
 }
+
+/* Destaque visual da saudação personalizada (não do título LORVU). */
+#cityArrival #cityGreeting{position:absolute!important;left:50%!important;right:auto!important;top:clamp(175px,27vh,285px)!important;width:min(92vw,900px)!important;max-width:900px!important;margin:0!important;padding:0 12px!important;transform:translateX(-50%)!important;display:block!important;text-align:center!important;color:#f4e8ca!important;font-family:Cinzel,serif!important;font-size:clamp(30px,5.2vw,56px)!important;font-weight:600!important;letter-spacing:.035em!important;line-height:1.22!important;white-space:normal!important;overflow-wrap:anywhere!important;text-shadow:0 3px 18px #000e,0 0 28px #d6b97966!important;z-index:15!important;pointer-events:none!important;opacity:0;animation:cityGreetingIn 1.2s .5s ease forwards}
+@media(max-width:600px){#cityArrival #cityGreeting{top:clamp(155px,25vh,215px)!important;width:94vw!important;font-size:clamp(27px,7vw,38px)!important;line-height:1.25!important}}
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
 <button id="musicToggle" type="button" aria-pressed="false" aria-label="Ativar música"><span class="music-icon">♫</span><span id="musicLabel">ATIVAR MÚSICA</span></button>
