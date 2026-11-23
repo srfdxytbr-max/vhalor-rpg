@@ -158,6 +158,19 @@ body.vhalor-city .hero,body.vhalor-city header{opacity:0;pointer-events:none}
 #cityArrival .lorvu-shooting-stars i:nth-child(3){top:20%;animation-delay:10.5s;animation-duration:19s;transform:rotate(-29deg) scale(.85)}
 @keyframes lorvuMeteor{0%,8%{left:-25%;opacity:0}10%{opacity:.9}22%{left:125%;opacity:0}100%{left:125%;opacity:0}}
 @media(prefers-reduced-motion:reduce){#cityArrival .lorvu-star,#cityArrival .lorvu-shooting-stars i{animation:none}}
+
+/* Refinamento visual: controles arredondados e sem sobreposição. */
+#musicToggle{right:22px;bottom:86px;border-radius:999px;padding:12px 18px;min-height:44px;box-shadow:0 8px 28px #0009}
+#cityLogout{right:22px;bottom:22px;border-radius:999px;padding:13px 21px;min-height:44px;box-shadow:0 8px 28px #0009}
+button,.btn,.tab,.option,.choice,.admin-input,.data-row select,.editor,input,textarea,select{border-radius:14px}
+button.btn,.btn,button[type="submit"],button[type="button"]{transition:border-color .2s ease,background .2s ease,transform .2s ease,box-shadow .2s ease}
+button.btn:hover,.btn:hover{transform:translateY(-1px);box-shadow:0 5px 18px #0005}
+.panel,.card,.data-row,.system-card,.auth-card{border-radius:20px;overflow:hidden}
+.admin-input,.editor,.data-row select,input,textarea,select{border-radius:12px}
+@media(max-width:600px){
+ #musicToggle{right:12px;bottom:78px;padding:10px 14px;min-height:42px}
+ #cityLogout{right:12px;bottom:14px;padding:11px 16px;min-height:42px}
+}
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
 <button id="musicToggle" type="button" aria-pressed="false" aria-label="Ativar música"><span class="music-icon">♫</span><span id="musicLabel">ATIVAR MÚSICA</span></button>
