@@ -82,8 +82,16 @@ body.arrived .hero,body.arrived header{opacity:0!important;pointer-events:none;t
 .city-caption h2{font:500 clamp(25px,5vw,52px) Cinzel,serif;letter-spacing:.2em;color:#f2e5ca;margin:12px 0 8px}
 .city-caption p{font:10px Manrope,sans-serif;letter-spacing:.22em;color:#d4dbe3}
 @media(max-width:600px){.city-skyline{height:48%}.city-caption{top:16%}.city-caption small{letter-spacing:.25em}.city-caption p{line-height:1.8}}
+
+#musicToggle{position:fixed;z-index:20;right:22px;bottom:22px;display:flex;align-items:center;gap:10px;padding:11px 15px;border:1px solid #c9b27d88;background:#08111ddd;color:#eadfc8;font:10px Manrope,sans-serif;letter-spacing:.15em;cursor:pointer;backdrop-filter:blur(12px);box-shadow:0 8px 28px #0008;transition:.2s}
+#musicToggle:hover{border-color:#f0d69b;transform:translateY(-2px)}
+#musicToggle .music-icon{font-size:16px;color:#e5c98c}
+#musicToggle[aria-pressed="true"] .music-icon{animation:musicPulse 1.8s ease-in-out infinite}
+@keyframes musicPulse{50%{text-shadow:0 0 13px #e9c77a;transform:scale(1.12)}}
+@media(max-width:600px){#musicToggle{right:12px;bottom:12px;padding:10px 12px;font-size:9px}}
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
+<button id="musicToggle" type="button" aria-pressed="false" aria-label="Ativar música"><span class="music-icon">♫</span><span id="musicLabel">ATIVAR MÚSICA</span></button>
 <div id="cityArrival" aria-hidden="true"><div class="city-sun"></div><div class="city-haze"></div><div class="city-caption"><small>NOVERA · CONTINENTE CENTRAL</small><h2>CAPITAL DE VHALOR</h2><p>AS PORTAS DA CIDADE ESTÃO ABERTAS</p></div><div class="city-skyline" aria-hidden="true"><div class="city-building " style="height:24%"></div><div class="city-building " style="height:61%"></div><div class="city-building " style="height:34%"></div><div class="city-building " style="height:71%"></div><div class="city-building " style="height:44%"></div><div class="city-building " style="height:81%"></div><div class="city-building " style="height:54%"></div><div class="city-building " style="height:27%"></div><div class="city-building " style="height:64%"></div><div class="city-building tower" style="height:37%"></div><div class="city-building " style="height:74%"></div><div class="city-building " style="height:47%"></div><div class="city-building " style="height:84%"></div><div class="city-building " style="height:57%"></div><div class="city-building " style="height:30%"></div><div class="city-building " style="height:67%"></div><div class="city-building " style="height:40%"></div><div class="city-building " style="height:77%"></div><div class="city-building " style="height:50%"></div></div><div class="city-road"></div><div class="city-ground"></div></div>
 <header><span>VHALOR</span><span class="tag">REGISTRO DE ACESSO · 2013</span></header>
 <main><section class="hero"><h1>VHALOR</h1><p>UM MUNDO ALÉM DO CONHECIDO</p><div class="actions"><button class="btn primary" id="start">INICIAR</button><button class="btn" id="support">SUPORTE</button></div></section></main>
@@ -100,6 +108,56 @@ function meteor(){if(shooters.length<2)shooters.push({x:Math.random()*w*.85+w*.0
 function frame(t){ctx.clearRect(0,0,w,h);for(const s of stars){const tw=(Math.sin(t*.001*s.s+s.p)+1)*.5,alpha=s.a*(.35+tw*.65);ctx.globalAlpha=alpha;ctx.fillStyle=s.c;ctx.beginPath();ctx.arc(s.x,s.y,s.r*(.7+tw*.5),0,Math.PI*2);ctx.fill();if(tw>.94&&s.r>1){ctx.globalAlpha=alpha*.35;ctx.fillRect(s.x-4,s.y-.35,8,.7);ctx.fillRect(s.x-.35,s.y-4,.7,8)}}ctx.globalAlpha=1;if(Math.random()<.006)meteor();shooters=shooters.filter(m=>m.life++<m.max&&m.x<w+150&&m.y<h+150);for(const m of shooters){const fade=Math.max(0,Math.min(1,m.life/5,(m.max-m.life)/8)),x2=m.x-m.len,y2=m.y-m.len*.42,g=ctx.createLinearGradient(m.x,m.y,x2,y2);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(1,'rgba(210,233,255,'+(fade*.9)+')');ctx.strokeStyle=g;ctx.lineWidth=1.7;ctx.beginPath();ctx.moveTo(m.x,m.y);ctx.lineTo(x2,y2);ctx.stroke();ctx.fillStyle='#fff';ctx.globalAlpha=fade;ctx.beginPath();ctx.arc(m.x,m.y,2,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;m.x+=m.v;m.y+=m.v*.42}requestAnimationFrame(frame)}
 new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
 
+</script>
+<script>
+/* Trilha ambiente original sintetizada para Vhalor — sem arquivos externos. */
+(()=>{
+ const button=document.getElementById('musicToggle'),label=document.getElementById('musicLabel');
+ if(!button)return;
+ let ctx=null,master=null,active=false,nodes=[];
+ const frequencies=[146.83,174.61,220,261.63,293.66,349.23,392,440];
+ function createMusic(){
+  const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+  if(!AudioContextClass)return false;
+  ctx=new AudioContextClass();
+  master=ctx.createGain();master.gain.value=.0001;master.connect(ctx.destination);
+  const low=ctx.createBiquadFilter();low.type='lowpass';low.frequency.value=950;low.Q.value=.5;low.connect(master);
+  // Quatro camadas lentas formam uma paisagem sonora espacial, suave e contemplativa.
+  [110,146.83,174.61,220].forEach((hz,i)=>{
+   const osc=ctx.createOscillator(),gain=ctx.createGain();
+   osc.type=i===0?'sine':'triangle';osc.frequency.value=hz;gain.gain.value=[.22,.075,.055,.045][i];
+   osc.detune.value=(i-1.5)*3;osc.connect(gain);gain.connect(low);osc.start();nodes.push(osc,gain);
+  });
+  const lfo=ctx.createOscillator(),lfoGain=ctx.createGain();lfo.frequency.value=.075;lfoGain.gain.value=180;lfo.connect(lfoGain);lfoGain.connect(low.frequency);lfo.start();nodes.push(lfo,lfoGain,low);
+  // Pequenas notas cristalinas surgem espaçadamente, como estrelas distantes.
+  const melody=[0,2,4,3,1,4,6,4,2,5,3,1];let step=0;
+  const playNote=()=>{
+   if(!ctx||ctx.state!=='running')return;
+   const now=ctx.currentTime,hz=frequencies[melody[step%melody.length]]*2;
+   const o=ctx.createOscillator(),g=ctx.createGain(),filter=ctx.createBiquadFilter();
+   o.type='sine';o.frequency.setValueAtTime(hz,now);o.frequency.exponentialRampToValueAtTime(hz*.997,now+2.8);
+   filter.type='lowpass';filter.frequency.value=1500;
+   g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.027,now+.35);g.gain.exponentialRampToValueAtTime(.0001,now+3.4);
+   o.connect(filter);filter.connect(g);g.connect(master);o.start(now);o.stop(now+3.5);step++;
+  };
+  playNote();const melodyTimer=setInterval(playNote,2600);nodes.push({stop:()=>clearInterval(melodyTimer)});
+  return true;
+ }
+ async function setPlaying(on){
+  if(on){
+   if(!ctx&&!createMusic()){label.textContent='ÁUDIO INDISPONÍVEL';return}
+   await ctx.resume();master.gain.cancelScheduledValues(ctx.currentTime);master.gain.setTargetAtTime(.48,ctx.currentTime,.9);
+   active=true;button.setAttribute('aria-pressed','true');button.setAttribute('aria-label','Pausar música');label.textContent='PAUSAR MÚSICA';
+  }else if(ctx){
+   master.gain.cancelScheduledValues(ctx.currentTime);master.gain.setTargetAtTime(.0001,ctx.currentTime,.18);
+   active=false;button.setAttribute('aria-pressed','false');button.setAttribute('aria-label','Retomar música');label.textContent='RETOMAR MÚSICA';
+  }
+ }
+ button.addEventListener('click',()=>setPlaying(!active));
+ // O primeiro clique em Iniciar libera o áudio nos navegadores que bloqueiam autoplay.
+ document.getElementById('start')?.addEventListener('click',()=>{if(!active)setPlaying(true)},{once:true});
+ document.getElementById('authForm')?.addEventListener('submit',()=>{if(!active)setPlaying(true)},{once:true});
+})();
 </script>
 <script type="module" src="./auth.js"></script>
 <script type="module">
