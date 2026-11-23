@@ -207,8 +207,19 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
  sun.position.set(-8,3,-13);scene.add(sun);
  const sunGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:(()=>{const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),g=x.createRadialGradient(64,64,2,64,64,64);g.addColorStop(0,'rgba(255,224,160,.9)');g.addColorStop(.22,'rgba(255,167,91,.35)');g.addColorStop(1,'rgba(255,130,70,0)');x.fillStyle=g;x.fillRect(0,0,128,128);return new THREE.CanvasTexture(c)})(),transparent:true,depthWrite:false}));sunGlow.scale.set(5.2,5.2,1);sunGlow.position.copy(sun.position);scene.add(sunGlow);
  // Two moons orbit on separate inclined planes, at different speeds.
- function moon(radius,color,distance,speed,inclination,size){const pivot=new THREE.Group();pivot.rotation.x=inclination;pivot.rotation.z=inclination*.55;world.add(pivot);const m=new THREE.Mesh(new THREE.SphereGeometry(size,40,28),new THREE.MeshStandardMaterial({color,roughness:1}));m.position.set(distance,0,0);pivot.add(m);return pivot}
- const moonA=moon(1,0xdfe8ef,3.05,.12,.16,.29),moonB=moon(1,0x72a9d4,3.65,.085,-.28,.18);
+ function makeMoonTexture(kind){
+  const c=document.createElement('canvas');c.width=1024;c.height=512;const x=c.getContext('2d');
+  const base=kind==='blue'?'#527b9c':'#aeb8c0';x.fillStyle=base;x.fillRect(0,0,1024,512);
+  let seed=kind==='blue'?771:314;const rnd=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
+  // Fine mineral mottling and broad lunar maria.
+  for(let i=0;i<1700;i++){const px=rnd()*1024,py=rnd()*512,r=2+rnd()*18,a=.025+rnd()*.12;x.fillStyle=kind==='blue'?'rgba(17,42,65,'+a+')':'rgba(35,48,60,'+a+')';x.beginPath();x.ellipse(px,py,r,r*(.35+rnd()*.5),rnd()*3,0,Math.PI*2);x.fill()}
+  // Craters with raised rims and shaded interiors make the surface read as spherical rock.
+  for(let i=0;i<260;i++){const px=rnd()*1024,py=rnd()*512,r=2+rnd()*(kind==='blue'?13:19);const g=x.createRadialGradient(px-r*.22,py-r*.25,r*.12,px,py,r);g.addColorStop(0,kind==='blue'?'rgba(12,30,48,.32)':'rgba(35,43,51,.3)');g.addColorStop(.68,kind==='blue'?'rgba(22,49,70,.16)':'rgba(55,65,74,.15)');g.addColorStop(.84,kind==='blue'?'rgba(188,220,240,.24)':'rgba(245,249,250,.34)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.beginPath();x.arc(px,py,r,0,Math.PI*2);x.fill()}
+  const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;return tex;
+ }
+ const moonTextures={white:makeMoonTexture('white'),blue:makeMoonTexture('blue')};
+ function moon(radius,color,distance,speed,inclination,size,kind){const pivot=new THREE.Group();pivot.rotation.x=inclination;pivot.rotation.z=inclination*.55;world.add(pivot);const m=new THREE.Mesh(new THREE.SphereGeometry(size,64,48),new THREE.MeshStandardMaterial({map:moonTextures[kind],color,roughness:1}));m.position.set(distance,0,0);pivot.add(m);return pivot}
+ const moonA=moon(1,0xffffff,3.05,.12,.16,.29,'white'),moonB=moon(1,0xffffff,3.65,.085,-.28,.18,'blue');
  let last=0;
  function resize(){const w=innerWidth,h=innerHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);renderer.setPixelRatio(Math.min(devicePixelRatio,1.8))}
  addEventListener('resize',resize);
