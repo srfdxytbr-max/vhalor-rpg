@@ -60,8 +60,30 @@ header{z-index:3}main{z-index:2}.hero{position:relative;padding:28px 34px 30px;b
 .dashboard-actions .btn{width:auto}.system-content{white-space:pre-wrap;overflow-wrap:anywhere;color:#d9e1eb;font-size:12px;line-height:1.7}
 @media(min-width:760px){.admin-grid.two{grid-template-columns:1fr 1fr}.panel{width:min(94vw,720px)}}
 
+
+/* CHEGADA À CAPITAL DE NOVERA */
+body.entering #space{animation:none!important;opacity:1!important}
+#cityArrival{position:fixed;inset:0;z-index:2;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none;background:linear-gradient(180deg,#07101e 0%,#26364a 42%,#d08b62 76%,#1b202b 100%);transition:opacity 1.4s ease,visibility 1.4s}
+#cityArrival.visible{opacity:1;visibility:visible}
+#cityArrival:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 68%,#f5bd8055,transparent 38%),linear-gradient(180deg,transparent 50%,#090e18 100%)}
+.city-sun{position:absolute;width:clamp(90px,15vw,180px);height:clamp(90px,15vw,180px);border-radius:50%;left:68%;top:25%;background:radial-gradient(circle,#ffe9bd,#e8a36f 55%,#d47754 75%,transparent 76%);filter:drop-shadow(0 0 45px #f1b47c88)}
+.city-haze{position:absolute;left:-10%;right:-10%;bottom:20%;height:30%;background:linear-gradient(180deg,transparent,#d5a17b33,transparent);filter:blur(18px)}
+.city-skyline{position:absolute;left:0;right:0;bottom:0;height:58%;display:flex;align-items:flex-end;gap:clamp(3px,.7vw,10px);padding:0 1vw;justify-content:space-around}
+.city-building{position:relative;flex:1;max-width:8vw;min-width:12px;background:linear-gradient(90deg,#101b2a,#263448 48%,#111a29);border:1px solid #b8c8d522;box-shadow:inset 0 0 22px #02071199;clip-path:polygon(8% 0,92% 0,100% 100%,0 100%)}
+.city-building:before{content:"";position:absolute;inset:8% 12%;background:repeating-linear-gradient(0deg,transparent 0 13px,#ffd89a99 14px 17px),repeating-linear-gradient(90deg,transparent 0 11px,#ffd89a66 12px 14px);opacity:.65}
+.city-building.tower{max-width:5vw;background:linear-gradient(90deg,#172537,#40516a 50%,#172537);clip-path:polygon(35% 0,65% 0,72% 13%,100% 100%,0 100%,28% 13%)}
+.city-building.tower:after{content:"";position:absolute;left:48%;top:-12%;height:14%;border-left:2px solid #d7d9df;box-shadow:0 0 8px #d9e9ff}
+.city-ground{position:absolute;bottom:0;left:0;right:0;height:9%;background:linear-gradient(#182333,#070b12);box-shadow:0 -18px 40px #0a101c}
+.city-road{position:absolute;bottom:0;left:43%;width:14%;height:28%;background:linear-gradient(90deg,#080d15,#303a49 48%,#080d15);clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);opacity:.9}
+.city-road:after{content:"";position:absolute;left:49%;top:10%;bottom:0;border-left:2px dashed #e6c58a88}
+.city-caption{position:absolute;z-index:1;left:50%;top:12%;transform:translateX(-50%);text-align:center;width:90%;text-shadow:0 2px 18px #000}
+.city-caption small{font:10px Manrope,sans-serif;letter-spacing:.42em;color:#e3c99e}
+.city-caption h2{font:500 clamp(25px,5vw,52px) Cinzel,serif;letter-spacing:.2em;color:#f2e5ca;margin:12px 0 8px}
+.city-caption p{font:10px Manrope,sans-serif;letter-spacing:.22em;color:#d4dbe3}
+@media(max-width:600px){.city-skyline{height:48%}.city-caption{top:16%}.city-caption small{letter-spacing:.25em}.city-caption p{line-height:1.8}}
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
+<div id="cityArrival" aria-hidden="true"><div class="city-sun"></div><div class="city-haze"></div><div class="city-caption"><small>NOVERA · CONTINENTE CENTRAL</small><h2>CAPITAL DE VHALOR</h2><p>AS PORTAS DA CIDADE ESTÃO ABERTAS</p></div><div class="city-skyline" aria-hidden="true"><div class="city-building " style="height:24%"></div><div class="city-building " style="height:61%"></div><div class="city-building " style="height:34%"></div><div class="city-building " style="height:71%"></div><div class="city-building " style="height:44%"></div><div class="city-building " style="height:81%"></div><div class="city-building " style="height:54%"></div><div class="city-building " style="height:27%"></div><div class="city-building " style="height:64%"></div><div class="city-building tower" style="height:37%"></div><div class="city-building " style="height:74%"></div><div class="city-building " style="height:47%"></div><div class="city-building " style="height:84%"></div><div class="city-building " style="height:57%"></div><div class="city-building " style="height:30%"></div><div class="city-building " style="height:67%"></div><div class="city-building " style="height:40%"></div><div class="city-building " style="height:77%"></div><div class="city-building " style="height:50%"></div></div><div class="city-road"></div><div class="city-ground"></div></div>
 <header><span>VHALOR</span><span class="tag">REGISTRO DE ACESSO · 2013</span></header>
 <main><section class="hero"><h1>VHALOR</h1><p>UM MUNDO ALÉM DO CONHECIDO</p><div class="actions"><button class="btn primary" id="start">INICIAR</button><button class="btn" id="support">SUPORTE</button></div></section></main>
 
@@ -232,6 +254,31 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
  const moonTextures={white:makeMoonTexture('white'),blue:makeMoonTexture('blue')};
  function moon(radius,color,distance,speed,inclination,size,kind){const pivot=new THREE.Group();pivot.rotation.x=inclination;pivot.rotation.z=inclination*.55;world.add(pivot);const m=new THREE.Mesh(new THREE.SphereGeometry(size,64,48),new THREE.MeshStandardMaterial({map:moonTextures[kind],color,roughness:1}));m.position.set(distance,0,0);pivot.add(m);return pivot}
  const moonA=moon(1,0xffffff,3.05,.12,.16,.29,'white'),moonB=moon(1,0xffffff,3.65,.085,-.28,.18,'blue');
+ let cinematicActive=false;
+ window.VhalorCinematic={
+  arrive:()=>new Promise(resolve=>{
+   cinematicActive=true;
+   const start={x:camera.position.x,y:camera.position.y,z:camera.position.z};
+   const end={x:.18,y:-.07,z:2.18};
+   const started=performance.now(),duration=5200;
+   document.body.classList.add('entering');
+   const city=document.getElementById('cityArrival');
+   function move(now){
+    const raw=Math.min(1,(now-started)/duration),eased=raw<.5?4*raw*raw*raw:1-Math.pow(-2*raw+2,3)/2;
+    camera.position.set(start.x+(end.x-start.x)*eased,start.y+(end.y-start.y)*eased,start.z+(end.z-start.z)*eased);
+    camera.lookAt(0,0,0);
+    if(raw>.78)city.classList.add('visible');
+    if(raw<1)requestAnimationFrame(move);
+    else{document.body.classList.remove('entering');resolve()}
+   }
+   requestAnimationFrame(move);
+  }),
+  reset:()=>{
+   cinematicActive=false;
+   const city=document.getElementById('cityArrival');city.classList.remove('visible');
+   camera.position.set(0,0,12.6);camera.lookAt(0,0,0);
+  }
+ };
  let last=0;
  function resize(){const w=innerWidth,h=innerHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);renderer.setPixelRatio(Math.min(devicePixelRatio,1.8))}
  addEventListener('resize',resize);
@@ -252,7 +299,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
   world.rotation.z=Math.sin(t*.00008)*.035;
   moonA.rotation.y+=dt*.12;moonB.rotation.y+=dt*.085;
   // Slow camera breathing, while the star remains fixed and never circles the planet.
-  camera.position.x=Math.sin(t*.00008)*.12;camera.position.y=Math.cos(t*.00011)*.06;camera.lookAt(0,0,0);
+  if(!cinematicActive){camera.position.x=Math.sin(t*.00008)*.12;camera.position.y=Math.cos(t*.00011)*.06;camera.lookAt(0,0,0);}
   renderer.render(scene,camera);
  }
  requestAnimationFrame(animate);
