@@ -553,8 +553,13 @@ new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
  }
  function start(){
   if(traffic){traffic.style.visibility='visible';traffic.style.opacity='1';}
-  if(active)return;active=true;phase=0;weather=0;apply();
-  // Cada fase dura 2 minutos. O sol atravessa o céu sempre no mesmo sentido; as luas cruzam o céu durante a noite.
+  if(active)return;
+  active=true;phase=0;weather=0;
+  // Posiciona o sol no amanhecer sem animar a viagem desde a posição anterior.
+  if(sun){sun.style.transition='none';}
+  apply();
+  if(sun){void sun.offsetWidth;requestAnimationFrame(()=>sun.style.removeProperty('transition'));}
+  // Depois da entrada, o sol segue normalmente pelo céu em uma única direção.
   phaseTimer=setInterval(nextPhase,40000);
   weatherTimer=setInterval(nextWeather,180000);
  }
