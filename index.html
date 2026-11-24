@@ -108,9 +108,9 @@ body.vhalor-city .hero,body.vhalor-city header{opacity:0;pointer-events:none}
 #cityArrival .city-weather-label{padding:9px 12px;background:#08111d66;border:1px solid #ffffff22;backdrop-filter:blur(8px)}
 #cityArrival.storm:after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;background:#dceaff;opacity:0;animation:cityLightning 9s infinite}
 @keyframes cityLightning{0%,92%,94%,100%{opacity:0}92.5%{opacity:.35}93%{opacity:.04}93.4%{opacity:.22}}
-#cityArrival.night .city-clouds{opacity:.25;filter:blur(15px)}
+#cityArrival.night .city-clouds{opacity:.2;filter:none}
 #cityArrival.night .city-sky{background:linear-gradient(180deg,#020611 0%,#071326 48%,#17243a 100%)!important}
-#cityArrival.night .city-building:before{opacity:1!important;filter:brightness(1.45);}
+#cityArrival.night .city-building:before{opacity:.9!important;filter:none;}
 #cityArrival.night .city-sun{opacity:0!important}
 #cityArrival.night:before{background:radial-gradient(ellipse at 50% 68%,#24334c33,transparent 42%),linear-gradient(180deg,#02061133 0%,#050a15aa 100%)}
 #cityArrival.day .city-clouds{opacity:.62}
@@ -122,7 +122,7 @@ body.vhalor-city .hero,body.vhalor-city header{opacity:0;pointer-events:none}
 #cityArrival.night .city-sky{background:linear-gradient(180deg,#020611 0%,#071326 58%,#18243a 100%)!important}
 #cityArrival.night .city-haze{opacity:.18}
 #cityArrival.night .city-building{filter:brightness(.8)}
-#cityArrival.night .city-building:before{opacity:1!important;filter:brightness(1.8);box-shadow:0 0 10px #ffd88b55}
+#cityArrival.night .city-building:before{opacity:.9!important;filter:none;box-shadow:none}
 #cityArrival .city-building:before{opacity:var(--lights,.12)}
 #cityLogout{display:block;pointer-events:auto}
 
@@ -149,11 +149,11 @@ body.vhalor-city .hero,body.vhalor-city header{opacity:0;pointer-events:none}
 /* Céu noturno de Lorvu: estrelas cintilantes e meteoros ocasionais. */
 #cityArrival .lorvu-stars{position:absolute;z-index:1;inset:0 0 38%;pointer-events:none;opacity:0;transition:opacity 5s ease;overflow:hidden}
 #cityArrival.night .lorvu-stars{opacity:1}
-#cityArrival .lorvu-star{position:absolute;width:var(--s,2px);height:var(--s,2px);border-radius:50%;background:#fff8df;box-shadow:0 0 5px 1px #c9dcff88;opacity:.35;animation:lorvuTwinkle var(--d,3s) ease-in-out infinite alternate;animation-delay:var(--delay,0s)}
+#cityArrival .lorvu-star{position:absolute;width:var(--s,2px);height:var(--s,2px);border-radius:50%;background:#fff8df;opacity:.68;box-shadow:none;animation:none;filter:none}
 @keyframes lorvuTwinkle{0%{opacity:.2;transform:scale(.7)}45%{opacity:.55}100%{opacity:1;transform:scale(1.35);filter:drop-shadow(0 0 4px #fff)}}
 #cityArrival .lorvu-shooting-stars{position:absolute;z-index:3;inset:0 0 35%;overflow:hidden;pointer-events:none;opacity:0;transition:opacity 3s}
 #cityArrival.night .lorvu-shooting-stars{opacity:1}
-#cityArrival .lorvu-shooting-stars i{position:absolute;top:12%;left:-25%;width:clamp(65px,9vw,130px);height:2px;background:linear-gradient(90deg,transparent,#dceaff,#fff);filter:drop-shadow(0 0 4px #d7e8ff);transform:rotate(-24deg);opacity:0;animation:lorvuMeteor 13s linear infinite}
+#cityArrival .lorvu-shooting-stars i{position:absolute;top:12%;left:-25%;width:clamp(65px,9vw,130px);height:2px;background:linear-gradient(90deg,transparent,#dceaff,#fff);filter:none;transform:rotate(-24deg);opacity:0;animation:lorvuMeteor 19s linear infinite}
 #cityArrival .lorvu-shooting-stars i:nth-child(2){top:35%;animation-delay:5.2s;animation-duration:17s;transform:rotate(-18deg) scale(.7)}
 #cityArrival .lorvu-shooting-stars i:nth-child(3){top:20%;animation-delay:10.5s;animation-duration:19s;transform:rotate(-29deg) scale(.85)}
 @keyframes lorvuMeteor{0%,8%{left:-25%;opacity:0}10%{opacity:.9}22%{left:125%;opacity:0}100%{left:125%;opacity:0}}
@@ -478,7 +478,7 @@ new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
  const starField=city.querySelector('.lorvu-stars');
  if(starField&&!starField.childElementCount){
   const frag=document.createDocumentFragment();
-  for(let n=0;n<95;n++){
+  for(let n=0;n<42;n++){
    const star=document.createElement('i');star.className='lorvu-star';
    star.style.left=(Math.random()*100)+'%';star.style.top=(Math.random()*100)+'%';
    star.style.setProperty('--s',(Math.random()*1.7+0.8)+'px');
