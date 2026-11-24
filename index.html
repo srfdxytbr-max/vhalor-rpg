@@ -475,6 +475,14 @@ new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
 (()=>{
  const city=document.getElementById('cityArrival'),label=document.getElementById('cityWeatherLabel'),sun=city?.querySelector('.city-sun');
  if(!city||!label)return;
+ const traffic=document.getElementById('lorvuTrafficVisible');
+ if(traffic){
+  traffic.style.cssText='position:fixed;display:block;left:0;right:0;bottom:7%;height:12%;width:100%;z-index:2147483000;overflow:hidden;pointer-events:none;visibility:hidden;opacity:0';
+  [...traffic.querySelectorAll('.road-car')].forEach((car,i)=>{
+   car.style.cssText='position:absolute;display:block;width:clamp(58px,7vw,92px);height:38px;top:'+(i===0?'50%':i===1?'72%':'28%')+';left:0;transform:translateY(-50%);filter:drop-shadow(0 2px 2px #000b);animation:'+(i===1?'roadCarRTL':'roadCarLTR')+' '+([17,22,20][i])+'s linear infinite;animation-delay:'+([-2,-8,-13][i])+'s';
+   const svg=car.querySelector('svg');if(svg)svg.style.cssText='display:block;width:100%;height:100%';
+  });
+ }
  const starField=city.querySelector('.lorvu-stars');
  if(starField&&!starField.childElementCount){
   const frag=document.createDocumentFragment();
@@ -516,12 +524,13 @@ new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
   const pool=[0,0,1,1,2,3,4,5];weather=pool[Math.floor(Math.random()*pool.length)];apply();
  }
  function start(){
+  if(traffic){traffic.style.visibility='visible';traffic.style.opacity='1';}
   if(active)return;active=true;phase=0;weather=0;apply();
   // Cada fase dura 2 minutos. O sol atravessa o céu sempre no mesmo sentido; as luas cruzam o céu durante a noite.
   phaseTimer=setInterval(nextPhase,40000);
   weatherTimer=setInterval(nextWeather,180000);
  }
- function stop(){if(phaseTimer)clearInterval(phaseTimer);if(weatherTimer)clearInterval(weatherTimer);phaseTimer=weatherTimer=null;active=false}
+ function stop(){if(phaseTimer)clearInterval(phaseTimer);if(weatherTimer)clearInterval(weatherTimer);phaseTimer=weatherTimer=null;active=false;if(traffic){traffic.style.visibility='hidden';traffic.style.opacity='0';}}
  window.VhalorCityEnvironment={start,stop,apply};
  const observer=new MutationObserver(()=>{if(city.classList.contains('visible'))start();else stop()});
  observer.observe(city,{attributes:true,attributeFilter:['class']});
