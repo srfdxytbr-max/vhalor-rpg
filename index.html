@@ -416,6 +416,13 @@ body.arrived #lorvuTrafficVisible{visibility:visible!important;opacity:1!importa
 @keyframes lorvuBirdFlight{from{transform:translate3d(0,0,0)}to{transform:translate3d(130vw,-18px,0)}}
 #cityArrival.night .lorvu-birds{opacity:.55}
 @media(prefers-reduced-motion:reduce){#cityArrival .bird-flock{animation:none;left:40%}}
+
+/* Ajuste fino: uma faixa por sentido e intervalo para evitar sobreposição. */
+#lorvuTrafficVisible .road-car{box-sizing:border-box;overflow:visible}
+#lorvuTrafficVisible .service-car{position:absolute;isolation:isolate}
+#lorvuTrafficVisible .service-car svg{overflow:visible}
+#lorvuTrafficVisible .service-car svg rect{transform-box:fill-box;transform-origin:center;animation:lorvuBeaconPulse 1s steps(2,end) infinite}
+@keyframes lorvuBeaconPulse{50%{opacity:.28}}
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
 <button id="musicToggle" type="button" aria-pressed="false" aria-label="Ativar música"><span class="music-icon">♫</span><span id="musicLabel">ATIVAR MÚSICA</span></button>
@@ -497,11 +504,10 @@ new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
   traffic.style.cssText='position:fixed;display:block;left:0;right:0;bottom:7%;height:12%;width:100%;z-index:6;overflow:hidden;pointer-events:none;visibility:hidden;opacity:0';
   [...traffic.querySelectorAll('.road-car')].forEach((car,i)=>{
    const reverse=i%2===1;
-   const durations=[18,23,21,26,20,24,22];
-   const delays=[0,7,14,20,27,34,41];
-   const lanes=['34%','68%','34%','68%','34%','68%'];
-   const stagger=[0,5,11,17,24,31];
-   car.style.cssText='position:absolute;display:block;width:clamp(58px,7vw,92px);height:38px;top:'+lanes[i%lanes.length]+';left:'+(reverse?'calc(100% + 110px)':'-110px')+';transform:translateY(-50%);filter:drop-shadow(0 2px 2px #000b);animation:'+(reverse?'roadCarRTL':'roadCarLTR')+' '+durations[i%durations.length]+'s linear infinite;animation-delay:'+stagger[i%stagger.length]+'s';
+   const durations=[30,30,30,30,30,30];
+   const stagger=[0,15,30,45,60,75];
+   const lane=reverse?'68%':'34%';
+   car.style.cssText='position:absolute;display:block;width:clamp(58px,7vw,92px);height:38px;top:'+lane+';left:'+(reverse?'calc(100% + 110px)':'-110px')+';transform:translateY(-50%);filter:drop-shadow(0 2px 2px #000b);animation:'+(reverse?'roadCarRTL':'roadCarLTR')+' 30s linear infinite;animation-delay:'+stagger[i%stagger.length]+'s';
    const svg=car.querySelector('svg');if(svg)svg.style.cssText='display:block;width:100%;height:100%';
   });
  }
