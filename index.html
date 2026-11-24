@@ -391,7 +391,7 @@ button.btn:hover,.btn:hover{transform:translateY(-1px);box-shadow:0 5px 18px #00
 @keyframes lorvuVisibleReverse{from{transform:translate3d(calc(100vw + 90px),-50%,0) scaleX(-1)}to{transform:translate3d(-90px,-50%,0) scaleX(-1)}}
 
 /* Tráfego recriado em camada própria acima da estrada e da cidade. */
-#lorvuTrafficVisible{position:fixed!important;display:block!important;left:0!important;right:0!important;bottom:7%!important;height:12%!important;width:100%!important;z-index:2147483000!important;overflow:hidden!important;pointer-events:none!important;visibility:hidden!important;opacity:0!important}
+#lorvuTrafficVisible{position:fixed!important;display:block!important;left:0!important;right:0!important;bottom:7%!important;height:12%!important;width:100%!important;z-index:6!important;overflow:hidden!important;pointer-events:none!important;visibility:hidden!important;opacity:0!important}
 body.arrived #lorvuTrafficVisible{visibility:visible!important;opacity:1!important}
 #lorvuTrafficVisible .road-car{will-change:left,transform}
 #lorvuTrafficVisible .road-car svg{display:block;width:100%;height:100%;overflow:visible}
@@ -475,9 +475,10 @@ new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
  if(!city||!label)return;
  const traffic=document.getElementById('lorvuTrafficVisible');
  if(traffic){
-  traffic.style.cssText='position:fixed;display:block;left:0;right:0;bottom:7%;height:12%;width:100%;z-index:2147483000;overflow:hidden;pointer-events:none;visibility:hidden;opacity:0';
+  traffic.style.cssText='position:fixed;display:block;left:0;right:0;bottom:7%;height:12%;width:100%;z-index:6;overflow:hidden;pointer-events:none;visibility:hidden;opacity:0';
   [...traffic.querySelectorAll('.road-car')].forEach((car,i)=>{
-   car.style.cssText='position:absolute;display:block;width:clamp(58px,7vw,92px);height:38px;top:'+(i===0?'50%':i===1?'72%':'28%')+';left:0;transform:translateY(-50%);filter:drop-shadow(0 2px 2px #000b);animation:'+(i===1?'roadCarRTL':'roadCarLTR')+' '+([17,22,20][i])+'s linear infinite;animation-delay:'+([-2,-8,-13][i])+'s';
+   const reverse=i===1;
+   car.style.cssText='position:absolute;display:block;width:clamp(58px,7vw,92px);height:38px;top:'+(i===0?'50%':i===1?'72%':'28%')+';left:'+(reverse?'calc(100% + 110px)':'-110px')+';transform:translateY(-50%);filter:drop-shadow(0 2px 2px #000b);animation:'+(reverse?'roadCarRTL':'roadCarLTR')+' '+([17,22,20][i])+'s linear infinite;animation-delay:'+([0,7,14][i])+'s';
    const svg=car.querySelector('svg');if(svg)svg.style.cssText='display:block;width:100%;height:100%';
   });
  }
