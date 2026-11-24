@@ -423,10 +423,52 @@ body.arrived #lorvuTrafficVisible{visibility:visible!important;opacity:1!importa
 #lorvuTrafficVisible .service-car svg{overflow:visible}
 #lorvuTrafficVisible .service-car svg rect{transform-box:fill-box;transform-origin:center;animation:lorvuBeaconPulse 1s steps(2,end) infinite}
 @keyframes lorvuBeaconPulse{50%{opacity:.28}}
+
+/* CHEGADA CINEMATOGRÁFICA: travessia da atmosfera até Lorvu */
+#arrivalCinematic{position:fixed;inset:0;z-index:18;display:grid;place-items:center;overflow:hidden;pointer-events:none;opacity:0;visibility:hidden;background:radial-gradient(ellipse at 50% 50%,#13283acc 0%,#050a14df 68%,#02050bef 100%);transition:opacity .75s ease,visibility .75s}
+#arrivalCinematic.active{opacity:1;visibility:visible}
+#arrivalCinematic.leaving{opacity:0;visibility:hidden}
+.arrival-vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 20%,#02050b99 100%);box-shadow:inset 0 0 100px #000b}
+.arrival-orbit{position:absolute;width:min(78vw,650px);aspect-ratio:1;border:1px solid #c8d9e51c;border-radius:50%;box-shadow:0 0 45px #9ac8e20b,inset 0 0 45px #9ac8e20b}
+.arrival-orbit:before,.arrival-orbit:after{content:"";position:absolute;inset:12%;border:1px solid #d7bd8040;border-radius:50%;transform:rotateX(68deg) rotate(-25deg)}
+.arrival-orbit:after{inset:27%;border-color:#9fc8e52c;transform:rotateX(68deg) rotate(35deg)}
+.orbit-one{animation:arrivalOrbit 18s linear infinite}
+.orbit-two{width:min(105vw,850px);border-style:dashed;opacity:.42;animation:arrivalOrbit 30s linear infinite reverse}
+@keyframes arrivalOrbit{to{transform:rotate(360deg)}}
+.arrival-content{position:relative;z-index:2;width:min(88vw,540px);text-align:center;padding:30px 20px;text-shadow:0 2px 18px #000}
+.arrival-kicker{font:9px Manrope,sans-serif;letter-spacing:.32em;color:#d6c18e}
+.arrival-emblem{width:72px;height:72px;margin:22px auto 20px;border:1px solid #d9c28b99;border-radius:50%;display:grid;place-items:center;box-shadow:0 0 0 7px #d9c28b12,0 0 38px #b5cfe522,inset 0 0 22px #d9c28b1c;animation:arrivalEmblem 2.6s ease-in-out infinite}
+.arrival-emblem span{font:500 34px Cinzel,serif;color:#f1dfb6;text-shadow:0 0 22px #e7c98a99}
+@keyframes arrivalEmblem{50%{transform:scale(1.07);box-shadow:0 0 0 13px #d9c28b08,0 0 58px #b5cfe544,inset 0 0 28px #d9c28b30}}
+.arrival-content h2{font:500 clamp(17px,3vw,25px) Cinzel,serif;letter-spacing:.19em;color:#f2e8d4;margin:0 0 10px}
+.arrival-content p{font:9px Manrope,sans-serif;letter-spacing:.28em;color:#b7c7d7;margin:0 0 27px}
+.arrival-progress{height:2px;width:min(68vw,300px);margin:0 auto 14px;background:#d6e2ef2b;overflow:hidden}
+.arrival-progress i{display:block;width:100%;height:100%;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,#7ca8c9,#f0d39a);box-shadow:0 0 12px #e8ca8a;animation:arrivalProgress 5.2s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes arrivalProgress{to{transform:scaleX(1)}}
+.arrival-content small,.arrival-coordinate{font:8px Manrope,sans-serif;letter-spacing:.2em;color:#8fa4b8}
+.arrival-coordinate{position:absolute;right:24px;bottom:22px;z-index:2}
+.arrival-sparks{position:absolute;inset:0;overflow:hidden}
+.arrival-sparks i{position:absolute;width:2px;height:2px;border-radius:50%;background:#e6d6b4;box-shadow:0 0 9px 2px #a9d7ef88;animation:arrivalSpark var(--dur,3s) ease-in-out var(--delay,0s) infinite}
+.arrival-sparks i:nth-child(1){left:12%;top:22%;--dur:3s;--delay:-0.5s}
+.arrival-sparks i:nth-child(2){left:82%;top:18%;--dur:3.3s;--delay:-1.5s}
+.arrival-sparks i:nth-child(3){left:21%;top:71%;--dur:3.6s;--delay:-2.5s}
+.arrival-sparks i:nth-child(4){left:76%;top:78%;--dur:3.9s;--delay:-3.5s}
+.arrival-sparks i:nth-child(5){left:50%;top:12%;--dur:4.2s;--delay:-0.5s}
+.arrival-sparks i:nth-child(6){left:91%;top:48%;--dur:3s;--delay:-1.5s}
+.arrival-sparks i:nth-child(7){left:8%;top:52%;--dur:3.3s;--delay:-2.5s}
+.arrival-sparks i:nth-child(8){left:36%;top:88%;--dur:3.6s;--delay:-3.5s}
+.arrival-sparks i:nth-child(9){left:65%;top:30%;--dur:3.9s;--delay:-0.5s}
+.arrival-sparks i:nth-child(10){left:30%;top:36%;--dur:4.2s;--delay:-1.5s}
+.arrival-sparks i:nth-child(11){left:88%;top:90%;--dur:3s;--delay:-2.5s}
+.arrival-sparks i:nth-child(12){left:5%;top:88%;--dur:3.3s;--delay:-3.5s}
+@keyframes arrivalSpark{0%,100%{opacity:.15;transform:translateY(8px) scale(.7)}50%{opacity:1;transform:translateY(-12px) scale(1.5)}}
+@media(max-width:600px){.arrival-coordinate{right:12px;bottom:14px;font-size:7px}.arrival-content{padding:20px 12px}.arrival-kicker{font-size:8px;letter-spacing:.2em}.arrival-emblem{width:62px;height:62px}}
+@media(prefers-reduced-motion:reduce){.arrival-orbit,.arrival-emblem,.arrival-sparks i,.arrival-progress i{animation:none!important}.arrival-progress i{transform:scaleX(1)}}
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
 <button id="musicToggle" type="button" aria-pressed="false" aria-label="Ativar música"><span class="music-icon">♫</span><span id="musicLabel">ATIVAR MÚSICA</span></button>
 <div id="cityArrival" aria-hidden="true"><div class="city-sky"></div><div class="lorvu-stars" aria-hidden="true"></div><div class="lorvu-shooting-stars" aria-hidden="true"><i></i><i></i><i></i></div><div class="city-clouds"></div><div class="city-rain"></div><div class="city-fog"></div><div class="city-weather-label" id="cityWeatherLabel">PÔR DO SOL · TEMPO LIMPO</div><div class="city-sun"></div><div class="lorvu-birds" aria-hidden="true"><span class="bird-flock flock-a"><i></i><i></i><i></i></span><span class="bird-flock flock-b"><i></i><i></i><i></i><i></i></span></div><div class="city-moons" aria-hidden="true"><span class="city-moon city-moon-one"></span><span class="city-moon city-moon-two"></span></div><div class="city-haze"></div><div class="city-greeting" id="cityGreeting" aria-live="polite"></div><div class="city-caption"><small>POREMITA · PLANETA NOVERA</small><h2>LORVU</h2><p>CAPITAL DE POREMITA</p></div><div class="city-skyline city-skyline-back" aria-hidden="true"><div class="city-building " style="height:31%"></div><div class="city-building " style="height:48%"></div><div class="city-building " style="height:22%"></div><div class="city-building " style="height:39%"></div><div class="city-building tower" style="height:56%"></div><div class="city-building " style="height:30%"></div><div class="city-building " style="height:47%"></div><div class="city-building " style="height:21%"></div><div class="city-building " style="height:38%"></div><div class="city-building " style="height:55%"></div><div class="city-building " style="height:29%"></div><div class="city-building " style="height:46%"></div><div class="city-building " style="height:20%"></div><div class="city-building tower" style="height:37%"></div><div class="city-building " style="height:54%"></div><div class="city-building " style="height:28%"></div><div class="city-building " style="height:45%"></div><div class="city-building " style="height:19%"></div><div class="city-building " style="height:36%"></div><div class="city-building " style="height:53%"></div><div class="city-building " style="height:27%"></div><div class="city-building " style="height:44%"></div><div class="city-building tower" style="height:18%"></div><div class="city-building " style="height:35%"></div><div class="city-building " style="height:52%"></div><div class="city-building " style="height:26%"></div><div class="city-building " style="height:43%"></div></div><div class="city-skyline" aria-hidden="true"><div class="city-building " style="height:24%"></div><div class="city-building " style="height:61%"></div><div class="city-building " style="height:34%"></div><div class="city-building " style="height:71%"></div><div class="city-building " style="height:44%"></div><div class="city-building " style="height:81%"></div><div class="city-building " style="height:54%"></div><div class="city-building " style="height:27%"></div><div class="city-building " style="height:64%"></div><div class="city-building tower" style="height:37%"></div><div class="city-building " style="height:74%"></div><div class="city-building " style="height:47%"></div><div class="city-building " style="height:84%"></div><div class="city-building " style="height:57%"></div><div class="city-building " style="height:30%"></div><div class="city-building " style="height:67%"></div><div class="city-building " style="height:40%"></div><div class="city-building " style="height:77%"></div><div class="city-building " style="height:50%"></div></div><div class="city-road"></div><div class="lorvu-traffic" aria-hidden="true"><div class="lorvu-car car-one"><i></i><b></b></div><div class="lorvu-car car-two"><i></i><b></b></div><div class="lorvu-car car-three"><i></i><b></b></div><div class="lorvu-car car-four"><i></i><b></b></div><div class="lorvu-car car-five"><i></i><b></b></div></div><div class="lorvu-air-traffic" aria-hidden="true"><span class="lorvu-plane plane-one" role="img" aria-label="Avião"></span></div><div class="city-ground"></div><button id="cityLogout" type="button">⟵ DESCONECTAR</button></div>
+<div id="arrivalCinematic" aria-hidden="true"><div class="arrival-vignette"></div><div class="arrival-orbit orbit-one"></div><div class="arrival-orbit orbit-two"></div><div class="arrival-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="arrival-content"><span class="arrival-kicker">PORTAL DE NOVERA · SISTEMA DE VIAGEM</span><div class="arrival-emblem"><span>V</span></div><h2>ATRAVESSANDO A ATMOSFERA</h2><p>APROXIMANDO-SE DE POREMITA</p><div class="arrival-progress"><i></i></div><small>DESTINO: LORVU, CAPITAL DE POREMITA</small></div><div class="arrival-coordinate">NOVERA / 07° · LORVU</div></div>
 <div id="lorvuTrafficVisible" aria-hidden="true"><span class="road-car red"><svg viewBox="0 0 100 42"><path d="M8 27 L15 15 Q19 10 31 10 H68 Q78 10 84 20 L94 25 V34 H5 V29Z" fill="#a83e49"/><path d="M27 13H69L78 24H18Z" fill="#a9c9d9"/><circle cx="25" cy="34" r="7" fill="#090e16"/><circle cx="76" cy="34" r="7" fill="#090e16"/></svg></span><span class="road-car blue"><svg viewBox="0 0 100 42"><path d="M8 27 L15 15 Q19 10 31 10 H68 Q78 10 84 20 L94 25 V34 H5 V29Z" fill="#526d8b"/><path d="M27 13H69L78 24H18Z" fill="#a9c9d9"/><circle cx="25" cy="34" r="7" fill="#090e16"/><circle cx="76" cy="34" r="7" fill="#090e16"/></svg></span><span class="road-car gold"><svg viewBox="0 0 100 42"><path d="M8 27 L15 15 Q19 10 31 10 H68 Q78 10 84 20 L94 25 V34 H5 V29Z" fill="#c0a66e"/><path d="M27 13H69L78 24H18Z" fill="#a9c9d9"/><circle cx="25" cy="34" r="7" fill="#090e16"/><circle cx="76" cy="34" r="7" fill="#090e16"/></svg></span><span class="road-car service-car police" aria-label="police"><svg viewBox="0 0 100 42"><path d="M8 27 L15 15 Q19 10 31 10 H68 Q78 10 84 20 L94 25 V34 H5 V29Z" fill="#e5e9ef"/><path d="M27 13H69L78 24H18Z" fill="#9fc4d8"/><rect x="42" y="7" width="18" height="4" rx="2" fill="#2476d2"/><circle cx="25" cy="34" r="7" fill="#090e16"/><circle cx="76" cy="34" r="7" fill="#090e16"/></svg></span><span class="road-car service-car fire" aria-label="fire"><svg viewBox="0 0 100 42"><path d="M8 27 L15 15 Q19 10 31 10 H68 Q78 10 84 20 L94 25 V34 H5 V29Z" fill="#c9342c"/><path d="M27 13H69L78 24H18Z" fill="#9fc4d8"/><rect x="42" y="7" width="18" height="4" rx="2" fill="#ffce43"/><circle cx="25" cy="34" r="7" fill="#090e16"/><circle cx="76" cy="34" r="7" fill="#090e16"/></svg></span><span class="road-car service-car ambulance" aria-label="ambulance"><svg viewBox="0 0 100 42"><path d="M8 27 L15 15 Q19 10 31 10 H68 Q78 10 84 20 L94 25 V34 H5 V29Z" fill="#f0f2f2"/><path d="M27 13H69L78 24H18Z" fill="#9fc4d8"/><rect x="42" y="7" width="18" height="4" rx="2" fill="#d83232"/><circle cx="25" cy="34" r="7" fill="#090e16"/><circle cx="76" cy="34" r="7" fill="#090e16"/></svg></span></div>
 <header><span>VHALOR</span><span class="tag">REGISTRO DE ACESSO · 2013</span></header>
 <main><section class="hero"><h1>VHALOR</h1><p>UM MUNDO ALÉM DO CONHECIDO</p><div class="actions"><button class="btn primary" id="start">INICIAR</button><button class="btn" id="support">SUPORTE</button></div></section></main>
@@ -728,6 +770,8 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
  window.VhalorCinematic={
   arrive:()=>new Promise(resolve=>{
    cinematicActive=true;
+   const arrivalFx=document.getElementById('arrivalCinematic');
+   if(arrivalFx){arrivalFx.classList.remove('leaving');arrivalFx.classList.add('active');arrivalFx.setAttribute('aria-hidden','false');const bar=arrivalFx.querySelector('.arrival-progress i');if(bar){bar.style.animation='none';void bar.offsetWidth;bar.style.animation='';}}
    const start={x:camera.position.x,y:camera.position.y,z:camera.position.z};
    const end={x:.18,y:-.07,z:2.18};
    const started=performance.now(),duration=5200;
@@ -739,7 +783,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
     camera.lookAt(0,0,0);
     if(raw>.78){city.classList.add('visible');window.VhalorCityEnvironment?.start?.();}
     if(raw<1)requestAnimationFrame(move);
-    else{document.body.classList.remove('entering');document.body.classList.add('arrived');resolve()}
+    else{document.body.classList.remove('entering');document.body.classList.add('arrived');if(arrivalFx){arrivalFx.classList.remove('active');arrivalFx.classList.add('leaving');arrivalFx.setAttribute('aria-hidden','true');}resolve()}
    }
    requestAnimationFrame(move);
   }),
