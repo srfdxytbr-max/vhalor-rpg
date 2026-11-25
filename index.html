@@ -560,13 +560,16 @@ new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
  const traffic=document.getElementById('lorvuTrafficVisible');
  if(traffic){
   traffic.style.cssText='position:fixed;display:block;left:0;right:0;bottom:7%;height:12%;width:100%;z-index:6;overflow:hidden;pointer-events:none;visibility:hidden;opacity:0';
-  [...traffic.querySelectorAll('.road-car')].forEach((car,i)=>{
+  /* Duplica a frota base para manter vários veículos na pista ao mesmo tempo. */
+  const baseCars=[...traffic.querySelectorAll('.road-car')];
+  baseCars.forEach((car)=>traffic.appendChild(car.cloneNode(true)));
+  const cars=[...traffic.querySelectorAll('.road-car')];
+  const carSpeeds=[13,17,21,15,19,16,22,14,18,20,12,17];
+  const startOffsets=[-18,-7,-23,-12,-30,-4,-15,-26,-9,-20,-2,-32];
+  cars.forEach((car,i)=>{
    const reverse=i%2===1;
-   const durations=[30,30,30,30,30,30];
-   const stagger=[0,15,30,45,60,75];
    const lane=reverse?'68%':'34%';
-   const carSpeeds=[13,17,21,15,19];
-    car.style.cssText='position:absolute;display:block;width:clamp(58px,7vw,92px);height:38px;top:'+lane+';left:'+(reverse?'calc(100% + 110px)':'-110px')+';transform:translateY(-50%);filter:drop-shadow(0 2px 2px #000b);animation:'+(reverse?'roadCarRTL':'roadCarLTR')+' '+carSpeeds[i%carSpeeds.length]+'s linear infinite;animation-delay:'+stagger[i%stagger.length]+'s';
+   car.style.cssText='position:absolute;display:block;width:clamp(58px,7vw,92px);height:38px;top:'+lane+';left:'+(reverse?'calc(100% + 110px)':'-110px')+';transform:translateY(-50%);filter:drop-shadow(0 2px 2px #000b);animation:'+(reverse?'roadCarRTL':'roadCarLTR')+' '+carSpeeds[i%carSpeeds.length]+'s linear infinite;animation-delay:'+startOffsets[i%startOffsets.length]+'s';
    const svg=car.querySelector('svg');if(svg)svg.style.cssText='display:block;width:100%;height:100%';
   });
  }
