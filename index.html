@@ -517,6 +517,39 @@ body.arrived #lorvuTrafficVisible{visibility:visible!important;opacity:1!importa
 @media(max-width:900px){#cityActionBar{bottom:76px;grid-template-columns:repeat(2,clamp(82px,22vw,104px));grid-template-rows:repeat(2,clamp(82px,22vw,104px));gap:7px}#cityActionBar button{width:clamp(82px,22vw,104px);height:clamp(82px,22vw,104px);padding:7px;font-size:8px}}
 @media(max-width:600px){#cityActionBar{left:50%;right:auto;bottom:76px;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 24px);display:grid;grid-template-columns:repeat(2,clamp(76px,22vw,96px));grid-template-rows:repeat(2,clamp(76px,22vw,96px));gap:7px}#cityActionBar button{width:clamp(76px,22vw,96px);height:clamp(76px,22vw,96px);min-width:0;min-height:0;padding:6px;font-size:8px}}
 
+
+/* Ações principais em destaque na chegada à cidade */
+#cityActionBar{
+  left:50%;right:auto;bottom:clamp(28px,5vh,58px);transform:translateX(-50%);
+  grid-template-columns:repeat(2,clamp(150px,19vw,218px));
+  grid-template-rows:repeat(2,clamp(150px,19vw,218px));
+  gap:clamp(12px,1.6vw,20px);padding:clamp(10px,1.5vw,18px);
+  border:1px solid #d8c18a66;border-radius:20px;
+  background:linear-gradient(145deg,#07111bd9,#080e19e8);
+  box-shadow:0 18px 65px #000a,0 0 38px #d6bd8020,inset 0 1px #ffffff20;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+}
+#cityActionBar button{
+  width:clamp(150px,19vw,218px);height:clamp(150px,19vw,218px);
+  padding:18px;font-size:clamp(12px,1.15vw,15px);font-weight:700;
+  letter-spacing:.13em;line-height:1.5;border-radius:16px;
+  border:1px solid #c9b27da8;
+  background:linear-gradient(145deg,#182638ed,#0b1422ed);
+  box-shadow:0 10px 28px #0008,inset 0 1px #ffffff24;
+  transition:transform .25s,border-color .25s,background .25s,box-shadow .25s;
+}
+#cityActionBar button:hover:not(:disabled){transform:translateY(-5px);border-color:#f0d69b;background:linear-gradient(145deg,#26384ded,#111d2ded);box-shadow:0 16px 34px #0009,0 0 24px #d6bd8030}
+#cityActionBar #cityAdmin{background:linear-gradient(145deg,#65502feF,#29251fed);border:1px solid #f0d69bdc;color:#fff0ca;box-shadow:0 12px 34px #0009,0 0 30px #d6bd8030,inset 0 1px #fff6}
+#cityActionBar .cityActionPlaceholder{opacity:.82;background:linear-gradient(145deg,#172638e8,#0a1421e8);border:1px dashed #b9c6d18c;color:#d0d7e0}
+@media(max-width:900px){
+ #cityActionBar{bottom:clamp(76px,9vh,100px);grid-template-columns:repeat(2,clamp(138px,25vw,190px));grid-template-rows:repeat(2,clamp(138px,25vw,190px));gap:10px;padding:10px}
+ #cityActionBar button{width:clamp(138px,25vw,190px);height:clamp(138px,25vw,190px);font-size:12px}
+}
+@media(max-width:600px){
+ #cityActionBar{bottom:clamp(78px,10vh,105px);grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2, min(41vw,178px));width:min(92vw,390px);max-width:92vw;gap:9px;padding:9px;border-radius:17px}
+ #cityActionBar button{width:100%;height:100%;min-width:0;min-height:0;padding:10px;font-size:clamp(10px,3vw,13px);letter-spacing:.08em;border-radius:13px}
+}
+
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
 <button id="musicToggle" type="button" aria-pressed="false" aria-label="Ativar música"><span class="music-icon">♫</span><span id="musicLabel">ATIVAR MÚSICA</span></button>
