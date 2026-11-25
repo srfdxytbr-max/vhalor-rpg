@@ -550,6 +550,57 @@ body.arrived #lorvuTrafficVisible{visibility:visible!important;opacity:1!importa
  #cityActionBar button{width:100%;height:100%;min-width:0;min-height:0;padding:10px;font-size:clamp(10px,3vw,13px);letter-spacing:.08em;border-radius:13px}
 }
 
+
+/* Ajustes de proporção, legibilidade e desempenho */
+#cityActionBar{
+ left:50%;right:auto;bottom:clamp(18px,3vh,30px);transform:translateX(-50%);
+ grid-template-columns:repeat(2,clamp(108px,12vw,136px));
+ grid-template-rows:repeat(2,clamp(108px,12vw,136px));
+ gap:9px;padding:9px;border-radius:16px;
+ background:linear-gradient(145deg,#07111bd0,#080e19df);
+ border:1px solid #d8c18a55;box-shadow:0 12px 38px #0009,0 0 22px #d6bd8014;
+ backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)
+}
+#cityActionBar button{
+ width:clamp(108px,12vw,136px);height:clamp(108px,12vw,136px);
+ padding:10px;font-size:clamp(10px,.9vw,12px);border-radius:12px;
+ background:linear-gradient(145deg,#182638e8,#0b1422e8);
+ box-shadow:0 7px 20px #0007,inset 0 1px #ffffff20
+}
+#cityActionBar #cityAdmin{background:linear-gradient(145deg,#554329eF,#242019ed);border-color:#e2c78f}
+#cityActionBar .cityActionPlaceholder{opacity:.78;background:linear-gradient(145deg,#172638d9,#0a1421d9)}
+/* Trajeto suave do sol: somente transform, sem animação de top/left. */
+#cityArrival .city-sun{
+ left:0!important;top:0!important;will-change:transform;
+ animation:lorvuSunJourney 240s linear infinite;
+ transition:opacity 2s linear!important
+}
+@keyframes lorvuSunJourney{
+ 0%{transform:translate3d(-8vw,34vh,0)}
+ 25%{transform:translate3d(20vw,16vh,0)}
+ 50%{transform:translate3d(48vw,10vh,0)}
+ 75%{transform:translate3d(76vw,27vh,0)}
+ 100%{transform:translate3d(108vw,39vh,0)}
+}
+#cityArrival:not(.visible) .city-sun{animation-play-state:paused}
+#cityArrival .city-sky{transition:none!important}
+@media(max-width:900px){
+ #cityActionBar{bottom:clamp(72px,9vh,88px);grid-template-columns:repeat(2,clamp(104px,17vw,122px));grid-template-rows:repeat(2,clamp(104px,17vw,122px));gap:8px;padding:8px}
+ #cityActionBar button{width:clamp(104px,17vw,122px);height:clamp(104px,17vw,122px)}
+}
+@media(max-width:600px){
+ #cityActionBar{bottom:clamp(72px,9vh,88px);width:min(82vw,270px);max-width:82vw;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,min(32vw,126px));gap:7px;padding:7px}
+ #cityActionBar button{width:100%;height:100%;min-width:0;min-height:0;padding:7px;font-size:10px}
+ #cityArrival .city-sun{animation-name:lorvuSunJourneyMobile}
+}
+@keyframes lorvuSunJourneyMobile{
+ 0%{transform:translate3d(-8vw,30vh,0)}
+ 25%{transform:translate3d(18vw,15vh,0)}
+ 50%{transform:translate3d(43vw,9vh,0)}
+ 75%{transform:translate3d(68vw,24vh,0)}
+ 100%{transform:translate3d(100vw,35vh,0)}
+}
+
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
 <button id="musicToggle" type="button" aria-pressed="false" aria-label="Ativar música"><span class="music-icon">♫</span><span id="musicLabel">ATIVAR MÚSICA</span></button>
@@ -649,7 +700,7 @@ new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
  const starField=city.querySelector('.lorvu-stars');
  if(starField&&!starField.childElementCount){
   const frag=document.createDocumentFragment();
-  for(let n=0;n<42;n++){
+  for(let n=0;n<24;n++){
    const star=document.createElement('i');star.className='lorvu-star';
    star.style.left=(Math.random()*100)+'%';star.style.top=(Math.random()*100)+'%';
    star.style.setProperty('--s',(Math.random()*1.7+0.8)+'px');
@@ -678,7 +729,7 @@ new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
  function apply(){
   city.classList.remove('dawn','morning','day','sunset','night','clear','cloudy','rain','foggy','storm','snowing');
   city.classList.add(phases[phase].cls,weathers[weather].cls);
-  if(sun){sun.style.top=phases[phase].sunTop;sun.style.left=phases[phase].sunLeft;sun.style.opacity=phases[phase].sunOpacity}
+  // O sol percorre o céu continuamente via transform (sem recalcular layout a cada quadro).
   label.textContent=phases[phase].name+' · '+weathers[weather].name;
   city.dataset.timeOfDay=phases[phase].cls;
  }
@@ -713,8 +764,8 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
  const scene=new THREE.Scene();
  const camera=new THREE.PerspectiveCamera(36,innerWidth/innerHeight,.1,100);
  camera.position.set(0,0,12.6);
- const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
- renderer.setPixelRatio(Math.min(devicePixelRatio,1.8));renderer.setSize(innerWidth,innerHeight);
+ const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:devicePixelRatio<1.5,powerPreference:'low-power'});
+ renderer.setPixelRatio(Math.min(devicePixelRatio,1.25));renderer.setSize(innerWidth,innerHeight);
  renderer.outputColorSpace=THREE.SRGBColorSpace;
  renderer.toneMapping=THREE.ACESFilmicToneMapping;
  const world=new THREE.Group();scene.add(world);
@@ -888,9 +939,12 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
   }
  };
  let last=0;
- function resize(){const w=innerWidth,h=innerHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);renderer.setPixelRatio(Math.min(devicePixelRatio,1.8))}
+ function resize(){const w=innerWidth,h=innerHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);renderer.setPixelRatio(Math.min(devicePixelRatio,1.25))}
  addEventListener('resize',resize);
- function animate(t){requestAnimationFrame(animate);const dt=Math.min((t-last)/1000||0,.05);last=t;
+ function animate(t){requestAnimationFrame(animate);
+  // A esfera espacial fica invisível na cidade; pausar seus cálculos e renderização poupa bastante GPU.
+  if(document.body.classList.contains('arrived')){last=t;return;}
+  const dt=Math.min((t-last)/1000||0,.05);last=t;
   globe.rotation.y+=dt*.025;cloudGroup.rotation.y+=dt*.033;cityLayer.rotation.y=globe.rotation.y;
   // Each cyclone spins around its own eye and drifts to a new random location.
   for(const storm of cycloneSystems){
