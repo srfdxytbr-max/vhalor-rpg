@@ -483,6 +483,11 @@ body.arrived #lorvuTrafficVisible{visibility:visible!important;opacity:1!importa
 
 #cityAdmin{position:absolute;right:22px;bottom:78px;z-index:30;border:1px solid #d6bd83a8;border-radius:999px;padding:11px 18px;background:linear-gradient(135deg,#2a2118ed,#101a27ed);color:#f3dfb3;font:600 10px Manrope,sans-serif;letter-spacing:.12em;box-shadow:0 5px 24px #0007;cursor:pointer;backdrop-filter:blur(10px)}
 #cityAdmin[hidden]{display:none!important}
+#cityAdmin{position:absolute;right:22px;bottom:78px;z-index:100;border:1px solid #d6bd83a8;border-radius:999px;padding:11px 18px;background:linear-gradient(135deg,#2a2118ed,#101a27ed);color:#f3dfb3;font:600 10px Manrope,sans-serif;letter-spacing:.12em;box-shadow:0 5px 24px #0007;cursor:pointer;backdrop-filter:blur(10px)}
+#cityArrival #cityAdmin{pointer-events:auto}
+#cityArrival:not(.visible) #cityAdmin{display:none}
+#cityArrival.visible #cityAdmin{display:block;pointer-events:auto}
+#cityAdmin[hidden]{display:none!important}
 #cityAdmin:active{transform:scale(.97)}
 @media(max-width:600px){#cityAdmin{right:12px;bottom:72px;padding:10px 14px;font-size:9px}}
 
