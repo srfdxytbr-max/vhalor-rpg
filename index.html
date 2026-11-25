@@ -601,6 +601,45 @@ body.arrived #lorvuTrafficVisible{visibility:visible!important;opacity:1!importa
  100%{transform:translate3d(100vw,35vh,0)}
 }
 
+
+/* Correção final: tráfego sempre atrás da interface e ações discretas. */
+#lorvuTrafficVisible{z-index:8!important}
+#cityArrival .lorvu-traffic{z-index:8!important}
+#cityArrival #cityActionBar{z-index:40!important}
+#cityActionBar{
+  bottom:18px!important;
+  grid-template-columns:repeat(2,82px)!important;
+  grid-template-rows:repeat(2,82px)!important;
+  gap:6px!important;padding:0!important;
+  width:max-content!important;
+  border:0!important;border-radius:0!important;
+  background:transparent!important;box-shadow:none!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+}
+#cityActionBar button{
+  width:82px!important;height:82px!important;
+  padding:7px!important;border-radius:10px!important;
+  background:rgba(8,15,25,.10)!important;
+  border:1px solid rgba(215,193,141,.48)!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+  font-size:9px!important;
+}
+#cityActionBar #cityAdmin{
+  background:rgba(75,57,30,.16)!important;
+  border-color:rgba(226,199,143,.62)!important;
+  color:#fff0ca!important;
+}
+#cityActionBar .cityActionPlaceholder{
+  opacity:.62!important;background:rgba(12,23,36,.09)!important;
+  border-style:dashed!important;color:#d0d7e0!important;
+}
+#cityActionBar button:hover:not(:disabled){transform:translateY(-2px)!important;background:rgba(30,45,62,.2)!important;box-shadow:none!important}
+@media(max-width:600px){
+ #cityActionBar{bottom:18px!important;grid-template-columns:repeat(2,72px)!important;grid-template-rows:repeat(2,72px)!important;gap:5px!important}
+ #cityActionBar button{width:72px!important;height:72px!important;padding:5px!important;font-size:8px!important}
+}
+
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
 <button id="musicToggle" type="button" aria-pressed="false" aria-label="Ativar música"><span class="music-icon">♫</span><span id="musicLabel">ATIVAR MÚSICA</span></button>
