@@ -507,15 +507,15 @@ body.arrived #lorvuTrafficVisible{visibility:visible!important;opacity:1!importa
 
 
 /* Barra central de ações da cidade: quatro espaços preparados. */
-#cityActionBar{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:40;display:flex;align-items:center;justify-content:center;gap:10px;width:max-content;max-width:calc(100vw - 250px);pointer-events:auto}
-#cityActionBar button{position:relative;right:auto;bottom:auto;display:flex;align-items:center;justify-content:center;min-width:142px;min-height:42px;padding:10px 15px;border:1px solid #c9b27d88;border-radius:999px;background:linear-gradient(135deg,#101b2bEE,#080e18EE);color:#eadfc8;font:600 9px Manrope,sans-serif;letter-spacing:.12em;white-space:nowrap;box-shadow:0 5px 22px #0007;backdrop-filter:blur(12px)}
-#cityActionBar #cityAdmin{z-index:1;background:linear-gradient(135deg,#2a2118ed,#101a27ed);border-color:#d6bd83a8;color:#f3dfb3}
+#cityActionBar{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:40;display:grid;grid-template-columns:repeat(2,104px);grid-template-rows:repeat(2,104px);gap:9px;width:max-content;pointer-events:auto}
+#cityActionBar button{position:relative;right:auto;bottom:auto;display:flex;align-items:center;justify-content:center;width:104px;height:104px;min-width:0;min-height:0;padding:10px;border:1px solid #c9b27d88;border-radius:13px;background:linear-gradient(145deg,#101b2bEE,#080e18EE);color:#eadfc8;font:600 9px Manrope,sans-serif;letter-spacing:.1em;white-space:normal;text-align:center;box-shadow:0 5px 22px #0007;backdrop-filter:blur(12px)}
+#cityActionBar #cityAdmin{z-index:1;background:linear-gradient(145deg,#2a2118ed,#101a27ed);border-color:#d6bd83a8;color:#f3dfb3}
 #cityActionBar .cityActionPlaceholder{opacity:.58;border-style:dashed;color:#aeb8c5;cursor:not-allowed}
 #cityActionBar #cityAdmin[hidden]{display:none!important}
 #cityArrival:not(.visible) #cityActionBar{display:none}
-#cityArrival.visible #cityActionBar{display:flex}
-@media(max-width:900px){#cityActionBar{gap:7px;max-width:calc(100vw - 24px);bottom:76px;flex-wrap:wrap}#cityActionBar button{min-width:clamp(112px,22vw,142px);min-height:39px;padding:9px 10px;font-size:8px}}
-@media(max-width:600px){#cityActionBar{left:12px;right:12px;bottom:76px;transform:none;width:auto;max-width:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}#cityActionBar button{width:100%;min-width:0;padding:9px 6px;font-size:8px}}
+#cityArrival.visible #cityActionBar{display:grid}
+@media(max-width:900px){#cityActionBar{bottom:76px;grid-template-columns:repeat(2,clamp(82px,22vw,104px));grid-template-rows:repeat(2,clamp(82px,22vw,104px));gap:7px}#cityActionBar button{width:clamp(82px,22vw,104px);height:clamp(82px,22vw,104px);padding:7px;font-size:8px}}
+@media(max-width:600px){#cityActionBar{left:50%;right:auto;bottom:76px;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 24px);display:grid;grid-template-columns:repeat(2,clamp(76px,22vw,96px));grid-template-rows:repeat(2,clamp(76px,22vw,96px));gap:7px}#cityActionBar button{width:clamp(76px,22vw,96px);height:clamp(76px,22vw,96px);min-width:0;min-height:0;padding:6px;font-size:8px}}
 
 </style></head><body>
 <div id="space"><canvas id="world3d" aria-hidden="true"></canvas><canvas id="starfield" aria-hidden="true"></canvas><div class="sun-orbit"><div class="sun"></div></div><div class="planet"><div class="planet-clouds"></div><div class="planet-atmosphere"></div></div><div class="moon"></div><div class="moon blue"></div><div class="nebula nebula-a"></div><div class="nebula nebula-b"></div></div>
