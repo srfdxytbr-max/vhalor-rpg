@@ -139,7 +139,7 @@ body.vhalor-city .hero,body.vhalor-city header{opacity:0;pointer-events:none}
 @keyframes lorvuDrive{from{left:-12%}to{left:112%}}
 @keyframes lorvuDriveReverse{from{left:112%}to{left:-12%}}
 #cityArrival .lorvu-air-traffic{position:absolute;z-index:4;inset:0;pointer-events:none;overflow:hidden}
-#cityArrival .lorvu-plane{position:absolute;left:-12%;top:29%;font-size:clamp(22px,3vw,36px);color:#e7edf4;text-shadow:0 2px 12px #101a2b;display:block;animation:lorvuFly 34s linear infinite}
+#cityArrival .lorvu-plane{position:absolute;left:-12%;top:29%;font-size:clamp(22px,3vw,36px);color:#e7edf4;text-shadow:0 2px 12px #101a2b;display:block;animation:lorvuFly 19s linear infinite}
 #cityArrival .plane-two{top:42%;font-size:clamp(15px,2vw,24px);opacity:.65;animation-duration:48s;animation-delay:-23s}
 @keyframes lorvuFly{from{transform:translateX(0) translateY(10px) scaleX(1)}to{transform:translateX(125vw) translateY(-28px) scaleX(1)}}
 #cityArrival.night .lorvu-car{filter:brightness(.75)}
@@ -406,9 +406,9 @@ body.arrived #lorvuTrafficVisible{visibility:visible!important;opacity:1!importa
 #lorvuTrafficVisible .service-car.fire svg rect{fill:#ffce43}
 #lorvuTrafficVisible .service-car.ambulance svg rect{fill:#d83232}
 #cityArrival .lorvu-birds{position:absolute;z-index:7;inset:8% 0 40%;overflow:hidden;pointer-events:none}
-#cityArrival .bird-flock{position:absolute;left:-16%;display:flex;gap:8px;align-items:center;animation:lorvuBirdFlight 42s linear infinite;will-change:transform}
-#cityArrival .flock-a{top:25%;animation-duration:48s}
-#cityArrival .flock-b{top:54%;animation-duration:61s;animation-delay:-29s;transform:scale(.72)}
+#cityArrival .bird-flock{position:absolute;left:-16%;display:flex;gap:8px;align-items:center;animation:lorvuBirdFlight 29s linear infinite;will-change:transform}
+#cityArrival .flock-a{top:25%;animation-duration:27s}
+#cityArrival .flock-b{top:54%;animation-duration:38s;animation-delay:-21s;transform:scale(.72)}
 #cityArrival .bird-flock i{display:block;width:15px;height:7px;position:relative}
 #cityArrival .bird-flock i:before,#cityArrival .bird-flock i:after{content:"";position:absolute;top:2px;width:9px;height:5px;border-top:2px solid #182536;border-radius:100% 100% 0 0}
 #cityArrival .bird-flock i:before{left:0;transform:rotate(16deg)}
@@ -565,7 +565,8 @@ new ResizeObserver(resize).observe(c);resize();requestAnimationFrame(frame)})();
    const durations=[30,30,30,30,30,30];
    const stagger=[0,15,30,45,60,75];
    const lane=reverse?'68%':'34%';
-   car.style.cssText='position:absolute;display:block;width:clamp(58px,7vw,92px);height:38px;top:'+lane+';left:'+(reverse?'calc(100% + 110px)':'-110px')+';transform:translateY(-50%);filter:drop-shadow(0 2px 2px #000b);animation:'+(reverse?'roadCarRTL':'roadCarLTR')+' 30s linear infinite;animation-delay:'+stagger[i%stagger.length]+'s';
+   const carSpeeds=[13,17,21,15,19];
+    car.style.cssText='position:absolute;display:block;width:clamp(58px,7vw,92px);height:38px;top:'+lane+';left:'+(reverse?'calc(100% + 110px)':'-110px')+';transform:translateY(-50%);filter:drop-shadow(0 2px 2px #000b);animation:'+(reverse?'roadCarRTL':'roadCarLTR')+' '+carSpeeds[i%carSpeeds.length]+'s linear infinite;animation-delay:'+stagger[i%stagger.length]+'s';
    const svg=car.querySelector('svg');if(svg)svg.style.cssText='display:block;width:100%;height:100%';
   });
  }
